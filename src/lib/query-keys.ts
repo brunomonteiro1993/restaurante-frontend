@@ -1,5 +1,6 @@
 import type { BillFilters } from '@/features/bills/types/bills.types'
 import type { OrderFilters } from '@/features/orders/types/orders.types'
+import type { TableListFilters } from '@/features/tables/types/tables.types'
 import type { WaiterCallFilters } from '@/features/waiter-calls/types/waiter-calls.types'
 
 export const queryKeys = {
@@ -21,5 +22,9 @@ export const queryKeys = {
   orders: {
     list: (filters: OrderFilters) => ['orders', 'list', filters] as const,
     detail: (id: string) => ['orders', 'detail', id] as const,
+  },
+  tables: {
+    list: (filters: TableListFilters) => ['tables', 'list', filters] as const,
+    detail: (id: string) => ['tables', 'detail', id] as const,
   },
 } as const
