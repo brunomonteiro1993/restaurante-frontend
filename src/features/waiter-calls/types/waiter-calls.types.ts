@@ -30,5 +30,21 @@ export interface WaiterCallStatusUpdated {
 }
 
 export interface WaiterCallFilters {
+  page?: number
+  limit?: number
   status?: WaiterCallStatus
+  tableId?: string
+  dateFrom?: string
+  dateTo?: string
+  onlyOpen?: boolean
+}
+
+export interface WaiterCallsListResult {
+  items: WaiterCallListItem[]
+  meta: {
+    total: number
+    page: number
+    limit: number
+    totalPages: number
+  }
 }

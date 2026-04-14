@@ -17,9 +17,11 @@ export const useUpdateWaiterCallStatus = () => {
 
   return useMutation({
     mutationFn: ({ id, status }: MutationInput) => waiterCallsService.updateStatus(id, status),
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       toast.success('Status do chamado atualizado.')
-      queryClient.invalidateQueries({ queryKey: ['waiter-calls'] })
+      queryClient.invalidateQueries({ queryKey: ['waiter-calls', 'list'] })
+      queryClient.invalidateQueries({ queryKey: ['waiter-calls', 'detail'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.waiterCalls.detail(variables.id) })
       queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.stats })
     },
     onError: (error) => {

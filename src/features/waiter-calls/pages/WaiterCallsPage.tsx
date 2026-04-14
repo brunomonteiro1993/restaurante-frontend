@@ -18,6 +18,7 @@ export function WaiterCallsPage() {
   const updateStatusMutation = useUpdateWaiterCallStatus()
 
   const pendingId = updateStatusMutation.variables?.id
+  const calls = data?.items ?? []
 
   return (
     <div className="space-y-4">
@@ -26,6 +27,11 @@ export function WaiterCallsPage() {
         <p className="text-sm text-muted-foreground">
           Controle operacional dos chamados de atendimento por mesa.
         </p>
+        {data?.meta && (
+          <p className="mt-1 text-xs text-muted-foreground">
+            {data.meta.total} chamado(s) - pagina {data.meta.page} de {Math.max(data.meta.totalPages, 1)}
+          </p>
+        )}
       </div>
 
       <WaiterCallFilters value={filter} onChange={setFilter} />
@@ -55,7 +61,7 @@ export function WaiterCallsPage() {
         </Card>
       )}
 
-      {!isLoading && data && data.length === 0 && (
+      {!isLoading && data && calls.length === 0 && (
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Nenhum chamado encontrado</CardTitle>
@@ -66,9 +72,9 @@ export function WaiterCallsPage() {
         </Card>
       )}
 
-      {!isLoading && data && data.length > 0 && (
+      {!isLoading && data && calls.length > 0 && (
         <WaiterCallList
-          calls={data}
+          calls={calls}
           pendingId={pendingId}
           onUpdateStatus={(id, status) => updateStatusMutation.mutate({ id, status })}
         />
