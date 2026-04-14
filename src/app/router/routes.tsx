@@ -50,7 +50,14 @@ export const router = createBrowserRouter([
             ),
           },
           { path: '/orders', element: <OrdersPage /> },
-          { path: '/waiter-calls', element: <WaiterCallsPage /> },
+          {
+            path: '/waiter-calls',
+            element: (
+              <PermissionGuard roles={['ADMIN', 'MANAGER', 'WAITER']}>
+                <WaiterCallsPage />
+              </PermissionGuard>
+            ),
+          },
           { path: '/bills', element: <BillsPage /> },
           { path: '/tables', element: <TablesPage /> },
           { path: '/products', element: <ProductsPage /> },

@@ -5,4 +5,8 @@ export const queryKeys = {
   kitchen: {
     orders: ['kitchen', 'orders'] as const,
   },
+  waiterCalls: {
+    list: (filters: { status?: string }) => ['waiter-calls', 'list', filters] as const,
+    detail: (id: string) => ['waiter-calls', 'detail', id] as const,
+  },
 } as const
