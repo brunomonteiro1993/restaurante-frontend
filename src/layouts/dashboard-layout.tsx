@@ -2,7 +2,7 @@ import { LayoutDashboard, LogOut } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
-import { useAuth } from '@/features/auth/use-auth'
+import { useAuth } from '@/features/auth/hooks/use-auth'
 
 const links = [
   { to: '/dashboard', label: 'Dashboard' },

@@ -1,16 +1,26 @@
 import { Navigate, Outlet } from 'react-router-dom'
 
 import { hasPermission } from '@/features/auth/role-permissions'
-import { useAuth } from '@/features/auth/use-auth'
-import type { UserRole } from '@/types/domain.types'
+import { useAuth } from '@/features/auth/hooks/use-auth'
+import type { UserRole } from '@/features/auth/types/auth.types'
+
+function AuthLoadingFallback() {
+  return (
+    <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">
+      Carregando sessao...
+    </div>
+  )
+}
 
 export function ProtectedRoute() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, isLoading } = useAuth()
+  if (isLoading) return <AuthLoadingFallback />
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />
 }
 
 export function GuestRoute() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, isLoading } = useAuth()
+  if (isLoading) return <AuthLoadingFallback />
   return isAuthenticated ? <Navigate to="/dashboard" replace /> : <Outlet />
 }
 

@@ -1,14 +1,20 @@
 import axios from 'axios'
 
-import { authStorage } from '@/features/auth/auth.storage'
+import { getStoredToken } from '@/features/auth/services/auth.storage'
 import { env } from '@/lib/env'
 
 export const api = axios.create({
   baseURL: env.apiUrl,
 })
 
+let unauthorizedHandler: (() => void) | undefined
+
+export const setUnauthorizedHandler = (handler?: () => void) => {
+  unauthorizedHandler = handler
+}
+
 api.interceptors.request.use((config) => {
-  const token = authStorage.getToken()
+  const token = getStoredToken()
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
@@ -19,7 +25,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      authStorage.clear()
+      unauthorizedHandler?.()
     }
     return Promise.reject(error)
   },

@@ -1,24 +1,21 @@
-import { createContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react'
 
-import { authStorage } from '@/features/auth/auth.storage'
-import { api } from '@/services/api'
+import { authService } from '@/features/auth/services/auth.service'
+import type { AuthUser, LoginInput } from '@/features/auth/types/auth.types'
 import { socketService } from '@/services/socket'
-import type { User } from '@/types/domain.types'
-
-interface LoginInput {
-  email: string
-  password: string
-}
-
-interface LoginResponse {
-  accessToken: string
-  user: User
-}
 
 interface AuthContextValue {
-  user: User | null
+  user: AuthUser | null
   token: string | null
   isAuthenticated: boolean
+  isLoading: boolean
   login: (input: LoginInput) => Promise<void>
   logout: () => void
 }
@@ -26,38 +23,79 @@ interface AuthContextValue {
 export const AuthContext = createContext<AuthContextValue | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(authStorage.getUser())
-  const [token, setToken] = useState<string | null>(authStorage.getToken())
+  const [user, setUser] = useState<AuthUser | null>(authService.getStoredUser())
+  const [token, setToken] = useState<string | null>(authService.getStoredToken())
+  const [isLoading, setIsLoading] = useState(true)
+
+  const clearSession = useCallback(() => {
+    authService.clearSession()
+    setToken(null)
+    setUser(null)
+    socketService.disconnect()
+  }, [])
 
   useEffect(() => {
     if (token) socketService.connect()
     else socketService.disconnect()
   }, [token])
 
+  useEffect(() => {
+    authService.setUnauthorizedHandler(() => {
+      clearSession()
+    })
+
+    return () => {
+      authService.setUnauthorizedHandler(undefined)
+    }
+  }, [clearSession])
+
+  useEffect(() => {
+    const bootstrapSession = async () => {
+      const storedToken = authService.getStoredToken()
+      if (!storedToken) {
+        setIsLoading(false)
+        return
+      }
+
+      try {
+        const profile = await authService.getMe()
+        setToken(storedToken)
+        setUser(profile)
+      } catch {
+        clearSession()
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    void bootstrapSession()
+  }, [clearSession])
+
   const login = async (input: LoginInput) => {
-    const { data } = await api.post<LoginResponse>('/auth/login', input)
-    authStorage.setToken(data.accessToken)
-    authStorage.setUser(data.user)
-    setToken(data.accessToken)
-    setUser(data.user)
+    const session = await authService.login(input)
+    authService.persistSession(session)
+
+    setToken(session.token)
+    setUser(session.user)
+
+    const profile = await authService.getMe()
+    setUser(profile)
   }
 
   const logout = () => {
-    authStorage.clear()
-    setToken(null)
-    setUser(null)
-    socketService.disconnect()
+    clearSession()
   }
 
   const value = useMemo(
     () => ({
       user,
       token,
+      isLoading,
       isAuthenticated: Boolean(token),
       login,
       logout,
     }),
-    [token, user],
+    [isLoading, token, user],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
