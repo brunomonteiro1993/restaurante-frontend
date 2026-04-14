@@ -22,6 +22,7 @@ export function DashboardLayout() {
   const visibleLinks = links.filter((link) => {
     if (!user) return false
     if (link.to === '/kitchen') return hasPermission(user.role, 'kitchen:view')
+    if (link.to === '/waiter-calls') return hasPermission(user.role, 'waiter-calls:view')
     return true
   })
 
