@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom'
+import type { ReactNode } from 'react'
 
 import { hasPermission } from '@/features/auth/role-permissions'
 import { useAuth } from '@/features/auth/hooks/use-auth'
@@ -28,10 +29,12 @@ export function PermissionGuard({
   permission,
   roles,
   fallbackPath = '/dashboard',
+  children,
 }: {
   permission?: string
   roles?: UserRole[]
   fallbackPath?: string
+  children?: ReactNode
 }) {
   const { user } = useAuth()
   if (!user) return <Navigate to="/login" replace />
@@ -44,5 +47,5 @@ export function PermissionGuard({
     return <Navigate to={fallbackPath} replace />
   }
 
-  return <Outlet />
+  return children ? <>{children}</> : <Outlet />
 }
