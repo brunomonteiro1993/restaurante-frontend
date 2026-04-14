@@ -6,6 +6,8 @@ export const rolePermissions: Record<UserRole, string[]> = {
     'dashboard:view',
     'kitchen:view',
     'orders:view',
+    'orders:updateStatus',
+    'orders:deliver',
     'waiter-calls:view',
     'bills:view',
     'tables:view',
@@ -13,8 +15,8 @@ export const rolePermissions: Record<UserRole, string[]> = {
     'categories:view',
     'users:view',
   ],
-  WAITER: ['dashboard:view', 'orders:view', 'waiter-calls:view', 'bills:view', 'tables:view'],
-  KITCHEN: ['dashboard:view', 'kitchen:view', 'orders:view'],
+  WAITER: ['dashboard:view', 'orders:view', 'orders:deliver', 'waiter-calls:view', 'bills:view', 'tables:view'],
+  KITCHEN: ['dashboard:view', 'kitchen:view'],
 }
 
 export const hasPermission = (role: UserRole, permission: string) => {

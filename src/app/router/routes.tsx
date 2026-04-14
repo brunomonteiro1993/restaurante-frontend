@@ -49,7 +49,14 @@ export const router = createBrowserRouter([
               </PermissionGuard>
             ),
           },
-          { path: '/orders', element: <OrdersPage /> },
+          {
+            path: '/orders',
+            element: (
+              <PermissionGuard roles={['ADMIN', 'MANAGER', 'WAITER']}>
+                <OrdersPage />
+              </PermissionGuard>
+            ),
+          },
           {
             path: '/waiter-calls',
             element: (
