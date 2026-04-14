@@ -1,5 +1,1 @@
-import { PagePlaceholder } from '@/components/shared/page-placeholder'
-
-export const TablesPage = () => (
-  <PagePlaceholder title="Mesas" description="Gestao de ocupacao e disponibilidade de mesas." />
-)
+export { TablesPage } from '@/features/tables/pages/TablesPage'
