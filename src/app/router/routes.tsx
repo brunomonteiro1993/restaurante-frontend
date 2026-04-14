@@ -58,7 +58,14 @@ export const router = createBrowserRouter([
               </PermissionGuard>
             ),
           },
-          { path: '/bills', element: <BillsPage /> },
+          {
+            path: '/bills',
+            element: (
+              <PermissionGuard roles={['ADMIN', 'MANAGER', 'WAITER']}>
+                <BillsPage />
+              </PermissionGuard>
+            ),
+          },
           { path: '/tables', element: <TablesPage /> },
           { path: '/products', element: <ProductsPage /> },
           { path: '/categories', element: <CategoriesPage /> },

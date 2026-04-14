@@ -23,6 +23,7 @@ export function DashboardLayout() {
     if (!user) return false
     if (link.to === '/kitchen') return hasPermission(user.role, 'kitchen:view')
     if (link.to === '/waiter-calls') return hasPermission(user.role, 'waiter-calls:view')
+    if (link.to === '/bills') return hasPermission(user.role, 'bills:view')
     return true
   })
 
