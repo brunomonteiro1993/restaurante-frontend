@@ -1,0 +1,23 @@
+import type { UserRole } from '@/types/domain.types'
+
+export const rolePermissions: Record<UserRole, string[]> = {
+  ADMIN: ['*'],
+  MANAGER: [
+    'dashboard:view',
+    'kitchen:view',
+    'orders:view',
+    'waiter-calls:view',
+    'bills:view',
+    'tables:view',
+    'products:view',
+    'categories:view',
+    'users:view',
+  ],
+  WAITER: ['dashboard:view', 'orders:view', 'waiter-calls:view', 'tables:view'],
+  KITCHEN: ['dashboard:view', 'kitchen:view', 'orders:view'],
+}
+
+export const hasPermission = (role: UserRole, permission: string) => {
+  const permissions = rolePermissions[role]
+  return permissions.includes('*') || permissions.includes(permission)
+}
