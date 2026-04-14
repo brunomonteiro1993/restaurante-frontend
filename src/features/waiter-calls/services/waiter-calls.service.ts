@@ -4,6 +4,7 @@ import type {
   WaiterCallDetail,
   WaiterCallFilters,
   WaiterCallListItem,
+  WaiterCallsListResult,
   WaiterCallStatus,
   WaiterCallStatusUpdated,
 } from '@/features/waiter-calls/types/waiter-calls.types'
@@ -11,15 +12,33 @@ import type {
 const DEFAULT_LIMIT = 50
 
 export const waiterCallsService = {
-  async list(filters: WaiterCallFilters): Promise<WaiterCallListItem[]> {
+  async list(filters: WaiterCallFilters): Promise<WaiterCallsListResult> {
+    const {
+      page = 1,
+      limit = DEFAULT_LIMIT,
+      status,
+      tableId,
+      dateFrom,
+      dateTo,
+      onlyOpen,
+    } = filters
+
     const { data } = await api.get<ApiPaginatedResponse<WaiterCallListItem>>('/waiter-calls', {
       params: {
-        page: 1,
-        limit: DEFAULT_LIMIT,
-        ...(filters.status ? { status: filters.status } : {}),
+        page,
+        limit,
+        ...(status ? { status } : {}),
+        ...(tableId ? { tableId } : {}),
+        ...(dateFrom ? { dateFrom } : {}),
+        ...(dateTo ? { dateTo } : {}),
+        ...(onlyOpen !== undefined ? { onlyOpen } : {}),
       },
     })
-    return data.data
+
+    return {
+      items: data.data,
+      meta: data.meta,
+    }
   },
 
   async getById(id: string): Promise<WaiterCallDetail> {
