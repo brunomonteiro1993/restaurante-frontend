@@ -3,6 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/features/auth/hooks/use-auth'
+import { hasPermission } from '@/features/auth/role-permissions'
 
 const links = [
   { to: '/dashboard', label: 'Dashboard' },
@@ -18,6 +19,11 @@ const links = [
 
 export function DashboardLayout() {
   const { user, logout } = useAuth()
+  const visibleLinks = links.filter((link) => {
+    if (!user) return false
+    if (link.to === '/kitchen') return hasPermission(user.role, 'kitchen:view')
+    return true
+  })
 
   return (
     <div className="min-h-screen bg-muted/20">
@@ -41,7 +47,7 @@ export function DashboardLayout() {
       <div className="container grid gap-4 py-4 md:grid-cols-[220px_1fr]">
         <aside className="rounded-lg border bg-background p-2">
           <nav className="flex flex-col gap-1">
-            {links.map((link) => (
+            {visibleLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}

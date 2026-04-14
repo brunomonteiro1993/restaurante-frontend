@@ -3,7 +3,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { BillsPage } from '@/features/bills/bills-page'
 import { CategoriesPage } from '@/features/categories/categories-page'
 import { DashboardPage } from '@/features/dashboard/dashboard-page'
-import { GuestRoute, ProtectedRoute } from '@/features/auth/guards'
+import { GuestRoute, PermissionGuard, ProtectedRoute } from '@/features/auth/guards'
 import { LoginPage } from '@/features/auth/login-page'
 import { KitchenPage } from '@/features/kitchen/kitchen-page'
 import { OrdersPage } from '@/features/orders/orders-page'
@@ -41,7 +41,14 @@ export const router = createBrowserRouter([
         element: <DashboardLayout />,
         children: [
           { path: '/dashboard', element: <DashboardPage /> },
-          { path: '/kitchen', element: <KitchenPage /> },
+          {
+            path: '/kitchen',
+            element: (
+              <PermissionGuard roles={['ADMIN', 'MANAGER', 'KITCHEN']}>
+                <KitchenPage />
+              </PermissionGuard>
+            ),
+          },
           { path: '/orders', element: <OrdersPage /> },
           { path: '/waiter-calls', element: <WaiterCallsPage /> },
           { path: '/bills', element: <BillsPage /> },
