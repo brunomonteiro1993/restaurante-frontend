@@ -1,4 +1,4 @@
-import type { UserRole } from '@/types/domain.types'
+import type { UserRole } from '@/features/auth/types/auth.types'
 
 export const rolePermissions: Record<UserRole, string[]> = {
   ADMIN: ['*'],
