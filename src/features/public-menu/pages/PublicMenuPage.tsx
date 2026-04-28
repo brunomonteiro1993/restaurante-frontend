@@ -3,15 +3,39 @@ import { useParams } from 'react-router-dom'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { PublicCartButton } from '@/features/public-cart/components/PublicCartButton'
+import { PublicCartDrawer } from '@/features/public-cart/components/PublicCartDrawer'
+import { PublicCartProvider, usePublicCart } from '@/features/public-cart/hooks/usePublicCart'
 import { PublicCategorySection } from '@/features/public-menu/components/PublicCategorySection'
 import { PublicMenuHeader } from '@/features/public-menu/components/PublicMenuHeader'
 import { usePublicMenu } from '@/features/public-menu/hooks/usePublicMenu'
+import { useState } from 'react'
 
 export function PublicMenuPage() {
   const params = useParams<{ restaurantSlug: string; tableCode: string }>()
   const restaurantSlug = params.restaurantSlug?.trim()
   const tableCode = params.tableCode?.trim()
+  if (!restaurantSlug || !tableCode) {
+    return null
+  }
+
+  return (
+    <PublicCartProvider restaurantSlug={restaurantSlug} tableCode={tableCode}>
+      <PublicMenuPageContent restaurantSlug={restaurantSlug} tableCode={tableCode} />
+    </PublicCartProvider>
+  )
+}
+
+function PublicMenuPageContent({
+  restaurantSlug,
+  tableCode,
+}: {
+  restaurantSlug: string
+  tableCode: string
+}) {
   const { data, isLoading, isError } = usePublicMenu(restaurantSlug, tableCode)
+  const { addItem, itemsCount, subtotal } = usePublicCart()
+  const [cartOpen, setCartOpen] = useState(false)
 
   const visibleCategories = useMemo(
     () => (data?.categories ?? []).filter((category) => category.products.length > 0),
@@ -69,12 +93,26 @@ export function PublicMenuPage() {
           ) : (
             <div className="space-y-5">
               {visibleCategories.map((category) => (
-                <PublicCategorySection key={category.id} category={category} />
+                <PublicCategorySection
+                  key={category.id}
+                  category={category}
+                  onAddProduct={(product) =>
+                    addItem({
+                      productId: product.id,
+                      name: product.name,
+                      price: product.price,
+                      imageUrl: product.imageUrl,
+                    })
+                  }
+                />
               ))}
             </div>
           )}
         </>
       )}
+
+      <PublicCartButton itemsCount={itemsCount} subtotal={subtotal} onClick={() => setCartOpen(true)} />
+      <PublicCartDrawer open={cartOpen} onOpenChange={setCartOpen} />
     </div>
   )
 }

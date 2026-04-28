@@ -1,12 +1,14 @@
+import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import type { PublicMenuProduct } from '@/features/public-menu/types/public-menu.types'
 import { formatCurrency } from '@/utils/format'
 
 interface PublicProductCardProps {
   product: PublicMenuProduct
+  onAdd: (product: PublicMenuProduct) => void
 }
 
-export function PublicProductCard({ product }: PublicProductCardProps) {
+export function PublicProductCard({ product, onAdd }: PublicProductCardProps) {
   return (
     <Card>
       <CardContent className="space-y-3 p-3">
@@ -28,6 +30,9 @@ export function PublicProductCard({ product }: PublicProductCardProps) {
           )}
           <p className="text-sm font-medium">{formatCurrency(product.price)}</p>
         </div>
+        <Button type="button" size="sm" className="w-full" onClick={() => onAdd(product)}>
+          Adicionar
+        </Button>
       </CardContent>
     </Card>
   )
