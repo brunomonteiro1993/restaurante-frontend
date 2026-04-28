@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { usePermission } from '@/features/auth/permissions/usePermission'
 import { CategoryFilters } from '@/features/categories/components/CategoryFilters'
 import { CategoryList } from '@/features/categories/components/CategoryList'
 import { CreateCategoryDialog } from '@/features/categories/components/CreateCategoryDialog'
@@ -17,6 +18,8 @@ import type {
 } from '@/features/categories/types/categories.types'
 
 export function CategoriesPage() {
+  const { can } = usePermission()
+  const canManageCategories = can('categories.manage')
   const [activeFilter, setActiveFilter] = useState<CategoryActiveFilter>('ALL')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
@@ -64,9 +67,11 @@ export function CategoriesPage() {
             </p>
           )}
         </div>
-        <Button type="button" onClick={() => setCreateOpen(true)}>
-          Nova categoria
-        </Button>
+        {canManageCategories && (
+          <Button type="button" onClick={() => setCreateOpen(true)}>
+            Nova categoria
+          </Button>
+        )}
       </div>
 
       <CategoryFilters

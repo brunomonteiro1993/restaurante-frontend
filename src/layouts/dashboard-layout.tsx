@@ -3,33 +3,25 @@ import { NavLink, Outlet } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/features/auth/hooks/use-auth'
-import { hasPermission } from '@/features/auth/role-permissions'
+import { usePermission } from '@/features/auth/permissions/usePermission'
+import type { Permission } from '@/features/auth/permissions/permissions'
 
 const links = [
-  { to: '/dashboard', label: 'Dashboard' },
-  { to: '/kitchen', label: 'Kitchen' },
-  { to: '/orders', label: 'Pedidos' },
-  { to: '/waiter-calls', label: 'Chamados' },
-  { to: '/bills', label: 'Fechamento' },
-  { to: '/tables', label: 'Mesas' },
-  { to: '/products', label: 'Produtos' },
-  { to: '/categories', label: 'Categorias' },
-  { to: '/users', label: 'Usuarios' },
-]
+  { to: '/dashboard', label: 'Dashboard', permission: 'dashboard.read' },
+  { to: '/kitchen', label: 'Kitchen', permission: 'kitchen.read' },
+  { to: '/orders', label: 'Pedidos', permission: 'orders.read' },
+  { to: '/waiter-calls', label: 'Chamados', permission: 'waiterCalls.read' },
+  { to: '/bills', label: 'Fechamento', permission: 'bills.read' },
+  { to: '/tables', label: 'Mesas', permission: 'tables.manage' },
+  { to: '/products', label: 'Produtos', permission: 'products.manage' },
+  { to: '/categories', label: 'Categorias', permission: 'categories.manage' },
+  { to: '/users', label: 'Usuarios', permission: 'users.manage' },
+] as const satisfies ReadonlyArray<{ to: string; label: string; permission: Permission }>
 
 export function DashboardLayout() {
   const { user, logout } = useAuth()
-  const visibleLinks = links.filter((link) => {
-    if (!user) return false
-    if (link.to === '/kitchen') return hasPermission(user.role, 'kitchen:view')
-    if (link.to === '/waiter-calls') return hasPermission(user.role, 'waiter-calls:view')
-    if (link.to === '/bills') return hasPermission(user.role, 'bills:view')
-    if (link.to === '/orders') return hasPermission(user.role, 'orders:view')
-    if (link.to === '/tables') return hasPermission(user.role, 'tables:manage')
-    if (link.to === '/products') return hasPermission(user.role, 'products:manage')
-    if (link.to === '/categories') return hasPermission(user.role, 'categories:manage')
-    return true
-  })
+  const { can } = usePermission()
+  const visibleLinks = user ? links.filter((link) => can(link.permission)) : []
 
   return (
     <div className="min-h-screen bg-muted/20">

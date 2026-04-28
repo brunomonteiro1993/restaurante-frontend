@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { hasPermission } from '@/features/auth/role-permissions'
-import { useAuth } from '@/features/auth/hooks/use-auth'
+import { usePermission } from '@/features/auth/permissions/usePermission'
 import { useDeliverOrder } from '@/features/orders/hooks/useDeliverOrder'
 import { useUpdateOrderStatus } from '@/features/orders/hooks/useUpdateOrderStatus'
 import type { OrderStatus } from '@/features/orders/types/orders.types'
@@ -12,14 +11,11 @@ interface OrderActionButtonsProps {
 }
 
 export function OrderActionButtons({ orderId, status, compact }: OrderActionButtonsProps) {
-  const { user } = useAuth()
+  const { can } = usePermission()
   const updateMutation = useUpdateOrderStatus()
   const deliverMutation = useDeliverOrder()
-
-  if (!user) return null
-
-  const canUpdateStatus = hasPermission(user.role, 'orders:updateStatus')
-  const canDeliver = hasPermission(user.role, 'orders:deliver')
+  const canUpdateStatus = can('orders.updateStatus')
+  const canDeliver = can('orders.deliver')
 
   const isUpdating = updateMutation.isPending && updateMutation.variables?.id === orderId
   const isDelivering = deliverMutation.isPending && deliverMutation.variables === orderId
