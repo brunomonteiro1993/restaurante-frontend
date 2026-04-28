@@ -82,7 +82,14 @@ export const router = createBrowserRouter([
             ),
           },
           { path: '/products', element: <ProductsPage /> },
-          { path: '/categories', element: <CategoriesPage /> },
+          {
+            path: '/categories',
+            element: (
+              <PermissionGuard roles={['ADMIN', 'MANAGER']}>
+                <CategoriesPage />
+              </PermissionGuard>
+            ),
+          },
           { path: '/users', element: <UsersPage /> },
         ],
       },

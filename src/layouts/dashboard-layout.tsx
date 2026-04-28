@@ -26,6 +26,7 @@ export function DashboardLayout() {
     if (link.to === '/bills') return hasPermission(user.role, 'bills:view')
     if (link.to === '/orders') return hasPermission(user.role, 'orders:view')
     if (link.to === '/tables') return hasPermission(user.role, 'tables:manage')
+    if (link.to === '/categories') return hasPermission(user.role, 'categories:manage')
     return true
   })
 
