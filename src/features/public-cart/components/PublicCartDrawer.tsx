@@ -16,6 +16,7 @@ import { PublicOrderSuccessDialog } from '@/features/public-order/components/Pub
 import { useCreatePublicOrder } from '@/features/public-order/hooks/useCreatePublicOrder'
 import type { PublicOrderConfirmValues } from '@/features/public-order/schemas/public-order.schema'
 import type { PublicOrderResponse } from '@/features/public-order/types/public-order.types'
+import { savePublicLastOrder } from '@/features/public-order-tracking/hooks/usePublicOrderTracking'
 import { toast } from 'sonner'
 
 interface PublicCartDrawerProps {
@@ -65,6 +66,20 @@ export function PublicCartDrawer({
       {
         onSuccess: (order) => {
           toast.success('Pedido enviado com sucesso.')
+          savePublicLastOrder({
+            orderId: order.id,
+            createdAt: order.createdAt,
+            status:
+              order.status === 'PENDING' ||
+              order.status === 'PREPARING' ||
+              order.status === 'READY' ||
+              order.status === 'DELIVERED' ||
+              order.status === 'CANCELLED'
+                ? order.status
+                : 'PENDING',
+            restaurantSlug,
+            tableCode,
+          })
           clear()
           setConfirmOpen(false)
           onOpenChange(false)

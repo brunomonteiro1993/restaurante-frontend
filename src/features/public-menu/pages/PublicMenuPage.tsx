@@ -9,6 +9,7 @@ import { PublicCartProvider, usePublicCart } from '@/features/public-cart/hooks/
 import { PublicCategorySection } from '@/features/public-menu/components/PublicCategorySection'
 import { PublicMenuHeader } from '@/features/public-menu/components/PublicMenuHeader'
 import { usePublicMenu } from '@/features/public-menu/hooks/usePublicMenu'
+import { PublicOrderTrackingButton } from '@/features/public-order-tracking/components/PublicOrderTrackingButton'
 import { PublicWaiterCallButton } from '@/features/public-waiter-call/components/PublicWaiterCallButton'
 import { useState } from 'react'
 
@@ -83,6 +84,7 @@ function PublicMenuPageContent({
         <>
           <PublicMenuHeader restaurant={data.restaurant} table={data.table} />
           <PublicWaiterCallButton restaurantSlug={restaurantSlug} tableCode={tableCode} />
+          <PublicOrderTrackingButton restaurantSlug={restaurantSlug} tableCode={tableCode} />
           {visibleCategories.length === 0 ? (
             <Card>
               <CardHeader>
