@@ -9,6 +9,7 @@ import { PublicCartProvider, usePublicCart } from '@/features/public-cart/hooks/
 import { PublicCategorySection } from '@/features/public-menu/components/PublicCategorySection'
 import { PublicMenuHeader } from '@/features/public-menu/components/PublicMenuHeader'
 import { usePublicMenu } from '@/features/public-menu/hooks/usePublicMenu'
+import { PublicWaiterCallButton } from '@/features/public-waiter-call/components/PublicWaiterCallButton'
 import { useState } from 'react'
 
 export function PublicMenuPage() {
@@ -81,6 +82,7 @@ function PublicMenuPageContent({
       {!isLoading && data && (
         <>
           <PublicMenuHeader restaurant={data.restaurant} table={data.table} />
+          <PublicWaiterCallButton restaurantSlug={restaurantSlug} tableCode={tableCode} />
           {visibleCategories.length === 0 ? (
             <Card>
               <CardHeader>
