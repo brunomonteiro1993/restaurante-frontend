@@ -4,6 +4,7 @@ import { useQueries } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { usePermission } from '@/features/auth/permissions/usePermission'
 import { CreateProductDialog } from '@/features/products/components/CreateProductDialog'
 import { DeleteProductDialog } from '@/features/products/components/DeleteProductDialog'
 import { EditProductDialog } from '@/features/products/components/EditProductDialog'
@@ -20,6 +21,8 @@ import type {
 } from '@/features/products/types/products.types'
 
 export function ProductsPage() {
+  const { can } = usePermission()
+  const canManageProducts = can('products.manage')
   const [availabilityFilter, setAvailabilityFilter] =
     useState<ProductAvailabilityFilter>('ALL')
   const [search, setSearch] = useState('')
@@ -86,9 +89,11 @@ export function ProductsPage() {
             </p>
           )}
         </div>
-        <Button type="button" onClick={() => setCreateOpen(true)}>
-          Novo produto
-        </Button>
+        {canManageProducts && (
+          <Button type="button" onClick={() => setCreateOpen(true)}>
+            Novo produto
+          </Button>
+        )}
       </div>
 
       <ProductFilters

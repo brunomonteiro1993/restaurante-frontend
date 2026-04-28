@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import type { ReactNode } from 'react'
 
-import { hasPermission } from '@/features/auth/role-permissions'
+import { hasPermission, type Permission } from '@/features/auth/permissions/permissions'
 import { useAuth } from '@/features/auth/hooks/use-auth'
 import type { UserRole } from '@/features/auth/types/auth.types'
 
@@ -28,10 +28,10 @@ export function GuestRoute() {
 export function PermissionGuard({
   permission,
   roles,
-  fallbackPath = '/dashboard',
+  fallbackPath = '/403',
   children,
 }: {
-  permission?: string
+  permission?: Permission
   roles?: UserRole[]
   fallbackPath?: string
   children?: ReactNode

@@ -4,28 +4,26 @@ import { Link } from 'react-router-dom'
 import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DashboardStatsCards } from '@/features/dashboard/components/DashboardStats'
-import { useAuth } from '@/features/auth/hooks/use-auth'
-import { hasPermission } from '@/features/auth/role-permissions'
+import { usePermission } from '@/features/auth/permissions/usePermission'
+import type { Permission } from '@/features/auth/permissions/permissions'
 import { cn } from '@/lib/utils'
 import { useDashboard } from '@/features/dashboard/hooks/useDashboard'
 
 const shortcuts = [
-  { to: '/kitchen', label: 'Kitchen', permission: 'kitchen:view' as const },
-  { to: '/orders', label: 'Pedidos', permission: 'orders:view' as const },
-  { to: '/waiter-calls', label: 'Waiter Calls', permission: 'waiter-calls:view' as const },
-  { to: '/bills', label: 'Fechamento', permission: 'bills:view' as const },
-  { to: '/tables', label: 'Mesas', permission: 'tables:manage' as const },
-  { to: '/products', label: 'Produtos', permission: 'products:manage' as const },
-  { to: '/categories', label: 'Categorias', permission: 'categories:manage' as const },
-]
+  { to: '/kitchen', label: 'Kitchen', permission: 'kitchen.read' },
+  { to: '/orders', label: 'Pedidos', permission: 'orders.read' },
+  { to: '/waiter-calls', label: 'Waiter Calls', permission: 'waiterCalls.read' },
+  { to: '/bills', label: 'Fechamento', permission: 'bills.read' },
+  { to: '/tables', label: 'Mesas', permission: 'tables.manage' },
+  { to: '/products', label: 'Produtos', permission: 'products.manage' },
+  { to: '/categories', label: 'Categorias', permission: 'categories.manage' },
+] as const satisfies ReadonlyArray<{ to: string; label: string; permission: Permission }>
 
 export function DashboardPage() {
-  const { user } = useAuth()
+  const { can } = usePermission()
   const { data, isLoading, isError } = useDashboard()
 
-  const visibleShortcuts = user
-    ? shortcuts.filter((s) => hasPermission(user.role, s.permission))
-    : []
+  const visibleShortcuts = shortcuts.filter((s) => can(s.permission))
 
   return (
     <div className="space-y-4">

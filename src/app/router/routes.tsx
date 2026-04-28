@@ -4,6 +4,7 @@ import { BillsPage } from '@/features/bills/bills-page'
 import { CategoriesPage } from '@/features/categories/categories-page'
 import { DashboardPage } from '@/features/dashboard/dashboard-page'
 import { GuestRoute, PermissionGuard, ProtectedRoute } from '@/features/auth/guards'
+import { AccessDeniedPage } from '@/features/auth/access-denied-page'
 import { LoginPage } from '@/features/auth/login-page'
 import { KitchenPage } from '@/features/kitchen/kitchen-page'
 import { OrdersPage } from '@/features/orders/orders-page'
@@ -40,11 +41,19 @@ export const router = createBrowserRouter([
       {
         element: <DashboardLayout />,
         children: [
-          { path: '/dashboard', element: <DashboardPage /> },
+          {
+            path: '/dashboard',
+            element: (
+              <PermissionGuard permission="dashboard.read">
+                <DashboardPage />
+              </PermissionGuard>
+            ),
+          },
+          { path: '/403', element: <AccessDeniedPage /> },
           {
             path: '/kitchen',
             element: (
-              <PermissionGuard roles={['ADMIN', 'MANAGER', 'KITCHEN']}>
+              <PermissionGuard permission="kitchen.read">
                 <KitchenPage />
               </PermissionGuard>
             ),
@@ -52,7 +61,7 @@ export const router = createBrowserRouter([
           {
             path: '/orders',
             element: (
-              <PermissionGuard roles={['ADMIN', 'MANAGER', 'WAITER']}>
+              <PermissionGuard permission="orders.read">
                 <OrdersPage />
               </PermissionGuard>
             ),
@@ -60,7 +69,7 @@ export const router = createBrowserRouter([
           {
             path: '/waiter-calls',
             element: (
-              <PermissionGuard roles={['ADMIN', 'MANAGER', 'WAITER']}>
+              <PermissionGuard permission="waiterCalls.read">
                 <WaiterCallsPage />
               </PermissionGuard>
             ),
@@ -68,7 +77,7 @@ export const router = createBrowserRouter([
           {
             path: '/bills',
             element: (
-              <PermissionGuard roles={['ADMIN', 'MANAGER', 'WAITER']}>
+              <PermissionGuard permission="bills.read">
                 <BillsPage />
               </PermissionGuard>
             ),
@@ -76,7 +85,7 @@ export const router = createBrowserRouter([
           {
             path: '/tables',
             element: (
-              <PermissionGuard roles={['ADMIN', 'MANAGER']}>
+              <PermissionGuard permission="tables.manage">
                 <TablesPage />
               </PermissionGuard>
             ),
@@ -84,7 +93,7 @@ export const router = createBrowserRouter([
           {
             path: '/products',
             element: (
-              <PermissionGuard roles={['ADMIN', 'MANAGER']}>
+              <PermissionGuard permission="products.manage">
                 <ProductsPage />
               </PermissionGuard>
             ),
@@ -92,12 +101,19 @@ export const router = createBrowserRouter([
           {
             path: '/categories',
             element: (
-              <PermissionGuard roles={['ADMIN', 'MANAGER']}>
+              <PermissionGuard permission="categories.manage">
                 <CategoriesPage />
               </PermissionGuard>
             ),
           },
-          { path: '/users', element: <UsersPage /> },
+          {
+            path: '/users',
+            element: (
+              <PermissionGuard permission="users.manage">
+                <UsersPage />
+              </PermissionGuard>
+            ),
+          },
         ],
       },
     ],

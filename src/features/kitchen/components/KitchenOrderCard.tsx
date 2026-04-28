@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { usePermission } from '@/features/auth/permissions/usePermission'
 import type { KitchenOrder } from '@/features/kitchen/types/kitchen.types'
 import { formatCurrency, formatDateTime, formatTime } from '@/utils/format'
 
@@ -26,6 +27,10 @@ interface KitchenOrderCardProps {
 }
 
 export function KitchenOrderCard({ order, onStart, onReady, isPendingAction }: KitchenOrderCardProps) {
+  const { can } = usePermission()
+  const canStart = can('kitchen.start')
+  const canReady = can('kitchen.ready')
+
   return (
     <Card>
       <CardHeader className="space-y-3">
@@ -62,13 +67,13 @@ export function KitchenOrderCard({ order, onStart, onReady, isPendingAction }: K
           </div>
         )}
 
-        {order.status === 'PENDING' && (
+        {order.status === 'PENDING' && canStart && (
           <Button onClick={() => onStart(order.id)} disabled={isPendingAction} className="w-full">
             {isPendingAction ? 'Iniciando...' : 'Iniciar preparo'}
           </Button>
         )}
 
-        {order.status === 'PREPARING' && (
+        {order.status === 'PREPARING' && canReady && (
           <Button onClick={() => onReady(order.id)} disabled={isPendingAction} className="w-full">
             {isPendingAction ? 'Atualizando...' : 'Marcar como pronto'}
           </Button>

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { usePermission } from '@/features/auth/permissions/usePermission'
 import { CreateTableDialog } from '@/features/tables/components/CreateTableDialog'
 import { DeleteTableDialog } from '@/features/tables/components/DeleteTableDialog'
 import { EditTableDialog } from '@/features/tables/components/EditTableDialog'
@@ -13,6 +14,8 @@ import { useTables } from '@/features/tables/hooks/useTables'
 import type { Table, TableListFilters, TableStatusFilter } from '@/features/tables/types/tables.types'
 
 export function TablesPage() {
+  const { can } = usePermission()
+  const canManageTables = can('tables.manage')
   const [statusFilter, setStatusFilter] = useState<TableStatusFilter>('ALL')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
@@ -60,9 +63,11 @@ export function TablesPage() {
             </p>
           )}
         </div>
-        <Button type="button" onClick={() => setCreateOpen(true)}>
-          Nova mesa
-        </Button>
+        {canManageTables && (
+          <Button type="button" onClick={() => setCreateOpen(true)}>
+            Nova mesa
+          </Button>
+        )}
       </div>
 
       <TableFilters status={statusFilter} search={search} onStatusChange={setStatusFilter} onSearchChange={setSearch} />

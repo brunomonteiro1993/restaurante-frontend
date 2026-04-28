@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { usePermission } from '@/features/auth/permissions/usePermission'
 import { WaiterCallStatusBadge } from '@/features/waiter-calls/components/WaiterCallStatusBadge'
 import type {
   WaiterCallListItem,
@@ -14,6 +15,9 @@ interface WaiterCallCardProps {
 }
 
 export function WaiterCallCard({ call, onUpdateStatus, isUpdating }: WaiterCallCardProps) {
+  const { can } = usePermission()
+  const canUpdateStatus = can('waiterCalls.updateStatus')
+
   return (
     <Card>
       <CardHeader className="space-y-2">
@@ -30,7 +34,7 @@ export function WaiterCallCard({ call, onUpdateStatus, isUpdating }: WaiterCallC
         </div>
 
         <div className="flex flex-wrap gap-2">
-          {call.status === 'OPEN' && (
+          {canUpdateStatus && call.status === 'OPEN' && (
             <>
               <Button
                 size="sm"
@@ -49,8 +53,7 @@ export function WaiterCallCard({ call, onUpdateStatus, isUpdating }: WaiterCallC
               </Button>
             </>
           )}
-
-          {call.status === 'ANSWERED' && (
+          {canUpdateStatus && call.status === 'ANSWERED' && (
             <Button
               size="sm"
               disabled={isUpdating}
