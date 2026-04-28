@@ -39,6 +39,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly (Permission | '*')[]> =
     'tables.manage',
     'categories.manage',
     'products.manage',
+    'users.manage',
   ],
   WAITER: [
     'dashboard.read',

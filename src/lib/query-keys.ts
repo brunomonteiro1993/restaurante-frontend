@@ -3,6 +3,7 @@ import type { CategoryListFilters } from '@/features/categories/types/categories
 import type { OrderFilters } from '@/features/orders/types/orders.types'
 import type { ProductListFilters } from '@/features/products/types/products.types'
 import type { TableListFilters } from '@/features/tables/types/tables.types'
+import type { UserListFilters } from '@/features/users/types/users.types'
 import type { WaiterCallFilters } from '@/features/waiter-calls/types/waiter-calls.types'
 
 export const queryKeys = {
@@ -36,5 +37,9 @@ export const queryKeys = {
   products: {
     list: (filters: ProductListFilters) => ['products', 'list', filters] as const,
     detail: (id: string) => ['products', 'detail', id] as const,
+  },
+  users: {
+    list: (filters: UserListFilters) => ['users', 'list', filters] as const,
+    detail: (id: string) => ['users', 'detail', id] as const,
   },
 } as const
