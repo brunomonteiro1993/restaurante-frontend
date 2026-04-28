@@ -112,7 +112,12 @@ function PublicMenuPageContent({
       )}
 
       <PublicCartButton itemsCount={itemsCount} subtotal={subtotal} onClick={() => setCartOpen(true)} />
-      <PublicCartDrawer open={cartOpen} onOpenChange={setCartOpen} />
+      <PublicCartDrawer
+        open={cartOpen}
+        onOpenChange={setCartOpen}
+        restaurantSlug={restaurantSlug}
+        tableCode={tableCode}
+      />
     </div>
   )
 }
