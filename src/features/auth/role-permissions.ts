@@ -12,7 +12,7 @@ export const rolePermissions: Record<UserRole, string[]> = {
     'bills:view',
     'tables:manage',
     'products:view',
-    'categories:view',
+    'categories:manage',
     'users:view',
   ],
   WAITER: ['dashboard:view', 'orders:view', 'orders:deliver', 'waiter-calls:view', 'bills:view'],

@@ -15,6 +15,7 @@ const shortcuts = [
   { to: '/waiter-calls', label: 'Waiter Calls', permission: 'waiter-calls:view' as const },
   { to: '/bills', label: 'Fechamento', permission: 'bills:view' as const },
   { to: '/tables', label: 'Mesas', permission: 'tables:manage' as const },
+  { to: '/categories', label: 'Categorias', permission: 'categories:manage' as const },
 ]
 
 export function DashboardPage() {

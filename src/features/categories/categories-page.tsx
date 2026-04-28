@@ -1,5 +1,1 @@
-import { PagePlaceholder } from '@/components/shared/page-placeholder'
-
-export const CategoriesPage = () => (
-  <PagePlaceholder title="Categorias" description="Organizacao de categorias do cardapio." />
-)
+export { CategoriesPage } from '@/features/categories/pages/CategoriesPage'
