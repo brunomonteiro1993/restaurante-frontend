@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { PublicWaiterCallStatus } from '@/features/public-waiter-call/components/PublicWaiterCallStatus'
 import { useCreatePublicWaiterCall } from '@/features/public-waiter-call/hooks/useCreatePublicWaiterCall'
+import { usePublicWaiterCallRealtime } from '@/features/public-waiter-call/hooks/usePublicWaiterCallRealtime'
 import { usePublicWaiterCallStatus } from '@/features/public-waiter-call/hooks/usePublicWaiterCallStatus'
 
 interface PublicWaiterCallButtonProps {
@@ -10,6 +11,7 @@ interface PublicWaiterCallButtonProps {
 }
 
 export function PublicWaiterCallButton({ restaurantSlug, tableCode }: PublicWaiterCallButtonProps) {
+  usePublicWaiterCallRealtime(restaurantSlug, tableCode)
   const statusQuery = usePublicWaiterCallStatus(restaurantSlug, tableCode)
   const createMutation = useCreatePublicWaiterCall(restaurantSlug, tableCode)
 
