@@ -1,3 +1,4 @@
+import { FiltersPanel } from '@/components/shared/filters-panel'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type { TableStatusFilter } from '@/features/tables/types/tables.types'
@@ -19,7 +20,7 @@ const statusOptions: Array<{ label: string; value: TableStatusFilter }> = [
 
 export function TableFilters({ status, search, onStatusChange, onSearchChange }: TableFiltersProps) {
   return (
-    <div className="flex flex-col gap-4">
+    <FiltersPanel>
       <div className="flex flex-wrap gap-2">
         {statusOptions.map((opt) => (
           <Button
@@ -32,7 +33,7 @@ export function TableFilters({ status, search, onStatusChange, onSearchChange }:
           </Button>
         ))}
       </div>
-      <div className="max-w-md space-y-1">
+      <div className="max-w-md space-y-1.5">
         <p className="text-xs font-medium text-muted-foreground">Busca por numero da mesa</p>
         <Input placeholder="Ex.: 1 ou 12" value={search} onChange={(e) => onSearchChange(e.target.value)} />
         {status !== 'ALL' && (
@@ -42,6 +43,6 @@ export function TableFilters({ status, search, onStatusChange, onSearchChange }:
           </p>
         )}
       </div>
-    </div>
+    </FiltersPanel>
   )
 }

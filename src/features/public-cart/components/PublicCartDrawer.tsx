@@ -93,8 +93,8 @@ export function PublicCartDrawer({
   return (
     <>
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="bottom" className="h-[85vh] max-w-md p-0">
-          <SheetHeader className="border-b">
+        <SheetContent side="bottom" className="h-[85vh] max-w-md rounded-t-2xl border p-0 shadow-xl">
+          <SheetHeader className="border-b bg-muted/30">
             <SheetTitle>Seu carrinho</SheetTitle>
             <SheetDescription>Revise os itens antes de enviar o pedido.</SheetDescription>
           </SheetHeader>
@@ -116,7 +116,7 @@ export function PublicCartDrawer({
             )}
           </div>
 
-          <SheetFooter className="border-t">
+          <SheetFooter className="border-t bg-background/90 backdrop-blur">
             <PublicCartSummary itemsCount={itemsCount} subtotal={subtotal} />
             <div className="grid grid-cols-2 gap-2">
               <Button type="button" variant="outline" disabled={state.items.length === 0} onClick={clear}>

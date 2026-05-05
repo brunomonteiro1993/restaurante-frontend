@@ -1,3 +1,4 @@
+import { FiltersPanel } from '@/components/shared/filters-panel'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type { CategoryActiveFilter } from '@/features/categories/types/categories.types'
@@ -22,7 +23,7 @@ export function CategoryFilters({
   onSearchChange,
 }: CategoryFiltersProps) {
   return (
-    <div className="flex flex-col gap-4">
+    <FiltersPanel>
       <div className="flex flex-wrap gap-2">
         {activeOptions.map((opt) => (
           <Button
@@ -36,7 +37,7 @@ export function CategoryFilters({
         ))}
       </div>
 
-      <div className="max-w-md space-y-1">
+      <div className="max-w-md space-y-1.5">
         <p className="text-xs font-medium text-muted-foreground">Busca por nome</p>
         <Input
           placeholder="Ex.: Bebidas"
@@ -44,6 +45,6 @@ export function CategoryFilters({
           onChange={(e) => onSearchChange(e.target.value)}
         />
       </div>
-    </div>
+    </FiltersPanel>
   )
 }

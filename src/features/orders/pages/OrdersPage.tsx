@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { PageHeader } from '@/components/shared/PageHeader'
+import { EmptyState, ErrorState, LoadingCards } from '@/components/shared/states'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
 import { OrderDetailsDialog } from '@/features/orders/components/OrderDetailsDialog'
 import { OrderFilters } from '@/features/orders/components/OrderFilters'
 import { OrderList } from '@/features/orders/components/OrderList'
@@ -50,18 +50,15 @@ export function OrdersPage() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Pedidos</h1>
-        <p className="text-sm text-muted-foreground">
-          Lista operacional com filtros do backend. Acoes de cozinha continuam na Kitchen; aqui o foco e
-          acompanhamento e entrega (conforme sua permissao).
+      <PageHeader
+        title="Pedidos"
+        subtitle="Lista operacional com filtros do backend. Acoes de cozinha continuam na Kitchen; aqui o foco e acompanhamento e entrega."
+      />
+      {meta && (
+        <p className="text-xs text-muted-foreground">
+          {meta.total} pedido(s) - pagina {meta.page} de {Math.max(meta.totalPages, 1)}
         </p>
-        {meta && (
-          <p className="mt-1 text-xs text-muted-foreground">
-            {meta.total} pedido(s) - pagina {meta.page} de {Math.max(meta.totalPages, 1)}
-          </p>
-        )}
-      </div>
+      )}
 
       <OrderFilters
         status={statusFilter}
@@ -76,40 +73,12 @@ export function OrdersPage() {
         onDateToChange={setDateTo}
       />
 
-      {isLoading && (
-        <div className="grid gap-4 lg:grid-cols-2">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i}>
-              <CardHeader>
-                <Skeleton className="h-6 w-40" />
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-10 w-32" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+      {isLoading && <LoadingCards />}
 
-      {isError && (
-        <Card className="border-destructive/40">
-          <CardContent className="py-4 text-sm text-destructive">
-            Nao foi possivel carregar os pedidos.
-          </CardContent>
-        </Card>
-      )}
+      {isError && <ErrorState message="Nao foi possivel carregar os pedidos." />}
 
       {!isLoading && data && orders.length === 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Nenhum pedido encontrado</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            Ajuste os filtros ou aguarde novos pedidos.
-          </CardContent>
-        </Card>
+        <EmptyState title="Nenhum pedido encontrado" description="Ajuste os filtros ou aguarde novos pedidos." />
       )}
 
       {!isLoading && data && orders.length > 0 && (

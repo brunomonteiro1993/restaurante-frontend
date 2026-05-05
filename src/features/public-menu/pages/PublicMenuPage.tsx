@@ -45,10 +45,10 @@ function PublicMenuPageContent({
   )
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 pb-28 animate-in fade-in slide-in-from-bottom-2 duration-300">
       {isLoading && (
         <>
-          <Card>
+          <Card className="rounded-2xl border shadow-sm">
             <CardContent className="space-y-3 p-4">
               <Skeleton className="h-6 w-40" />
               <Skeleton className="h-4 w-52" />
@@ -57,7 +57,7 @@ function PublicMenuPageContent({
           </Card>
           <div className="grid gap-3">
             {Array.from({ length: 4 }).map((_, i) => (
-              <Card key={i}>
+              <Card key={i} className="rounded-2xl border shadow-sm">
                 <CardContent className="space-y-2 p-3">
                   <Skeleton className="h-32 w-full" />
                   <Skeleton className="h-4 w-2/3" />
@@ -70,7 +70,7 @@ function PublicMenuPageContent({
       )}
 
       {isError && (
-        <Card className="border-destructive/40">
+        <Card className="rounded-2xl border-destructive/40 shadow-sm">
           <CardHeader>
             <CardTitle className="text-base text-destructive">Nao foi possivel carregar o cardapio</CardTitle>
           </CardHeader>
@@ -86,7 +86,7 @@ function PublicMenuPageContent({
           <PublicWaiterCallButton restaurantSlug={restaurantSlug} tableCode={tableCode} />
           <PublicOrderTrackingButton restaurantSlug={restaurantSlug} tableCode={tableCode} />
           {visibleCategories.length === 0 ? (
-            <Card>
+            <Card className="rounded-2xl border shadow-sm">
               <CardHeader>
                 <CardTitle className="text-base">Nenhum item disponivel</CardTitle>
               </CardHeader>

@@ -3,17 +3,18 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { usePermission } from '@/features/auth/permissions/usePermission'
 import type { KitchenOrder } from '@/features/kitchen/types/kitchen.types'
+import { statusBadgeClass } from '@/lib/status-badge'
 import { formatCurrency, formatDateTime, formatTime } from '@/utils/format'
 
 const statusMap: Record<
   KitchenOrder['status'],
   { label: string; className: string }
 > = {
-  PENDING: { label: 'Pendente', className: 'bg-amber-100 text-amber-800' },
-  PREPARING: { label: 'Em preparo', className: 'bg-blue-100 text-blue-800' },
-  READY: { label: 'Pronto', className: 'bg-emerald-100 text-emerald-800' },
-  DELIVERED: { label: 'Entregue', className: 'bg-zinc-200 text-zinc-800' },
-  CANCELLED: { label: 'Cancelado', className: 'bg-red-100 text-red-700' },
+  PENDING: { label: 'Pendente', className: statusBadgeClass.pending },
+  PREPARING: { label: 'Em preparo', className: statusBadgeClass.preparing },
+  READY: { label: 'Pronto', className: statusBadgeClass.ready },
+  DELIVERED: { label: 'Entregue', className: statusBadgeClass.delivered },
+  CANCELLED: { label: 'Cancelado', className: statusBadgeClass.cancelled },
 }
 
 const statusBadge = (status: KitchenOrder['status']) =>
@@ -32,7 +33,7 @@ export function KitchenOrderCard({ order, onStart, onReady, isPendingAction }: K
   const canReady = can('kitchen.ready')
 
   return (
-    <Card>
+    <Card className="transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
       <CardHeader className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <CardTitle className="text-base">Pedido #{order.id.slice(0, 8)}</CardTitle>

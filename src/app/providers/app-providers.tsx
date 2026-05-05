@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import { AuthProvider } from '@/features/auth/auth.context'
 import { Toaster } from '@/components/ui/sonner'
+import { ThemeProvider } from '@/components/theme/theme-provider'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,10 +15,12 @@ const queryClient = new QueryClient({
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        {children}
-        <Toaster richColors position="top-right" />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          {children}
+          <Toaster richColors position="top-right" />
+        </AuthProvider>
+      </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )

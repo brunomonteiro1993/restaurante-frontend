@@ -16,6 +16,7 @@ import {
 import { NavLink, Outlet } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/theme/theme-toggle'
 import { useAuth } from '@/features/auth/hooks/use-auth'
 import { usePermission } from '@/features/auth/permissions/usePermission'
 import type { Permission } from '@/features/auth/permissions/permissions'
@@ -54,6 +55,7 @@ export function DashboardLayout() {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <span className="text-xs text-muted-foreground">
               {user?.name} ({user?.role})
             </span>
@@ -104,7 +106,7 @@ export function DashboardLayout() {
         </aside>
 
         <section className="w-full p-6">
-          <div className="space-y-6">
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-300 space-y-6">
             <Outlet />
           </div>
         </section>

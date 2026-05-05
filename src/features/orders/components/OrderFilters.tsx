@@ -1,3 +1,4 @@
+import { FiltersPanel } from '@/components/shared/filters-panel'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type { OrderStatus } from '@/features/orders/types/orders.types'
@@ -39,7 +40,7 @@ export function OrderFilters({
   onDateToChange,
 }: OrderFiltersProps) {
   return (
-    <div className="flex flex-col gap-4">
+    <FiltersPanel>
       <div className="flex flex-wrap gap-2">
         {statusOptions.map((opt) => (
           <Button
@@ -53,8 +54,8 @@ export function OrderFilters({
         ))}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="space-y-1 sm:col-span-2">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="space-y-1.5 sm:col-span-2">
           <p className="text-xs font-medium text-muted-foreground">Busca (nome do cliente ou UUID do pedido)</p>
           <Input
             placeholder="Ex.: Joao ou UUID completo"
@@ -62,7 +63,7 @@ export function OrderFilters({
             onChange={(e) => onSearchChange(e.target.value)}
           />
         </div>
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           <p className="text-xs font-medium text-muted-foreground">Mesa (UUID)</p>
           <Input
             placeholder="Opcional"
@@ -71,7 +72,7 @@ export function OrderFilters({
             className="font-mono text-xs"
           />
         </div>
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           <p className="text-xs font-medium text-muted-foreground">Criado de / ate</p>
           <div className="flex gap-2">
             <Input type="date" value={dateFrom} onChange={(e) => onDateFromChange(e.target.value)} />
@@ -79,6 +80,6 @@ export function OrderFilters({
           </div>
         </div>
       </div>
-    </div>
+    </FiltersPanel>
   )
 }

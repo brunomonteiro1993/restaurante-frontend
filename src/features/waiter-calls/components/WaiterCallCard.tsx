@@ -19,7 +19,7 @@ export function WaiterCallCard({ call, onUpdateStatus, isUpdating }: WaiterCallC
   const canUpdateStatus = can('waiterCalls.updateStatus')
 
   return (
-    <Card>
+    <Card className="transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
       <CardHeader className="space-y-2">
         <div className="flex items-center justify-between gap-2">
           <CardTitle className="text-base">Mesa {call.table.number}</CardTitle>

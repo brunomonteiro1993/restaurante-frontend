@@ -16,7 +16,7 @@ interface TableCardProps {
 
 export function TableCard({ table, onEdit, onDelete, onQrCode, busy }: TableCardProps) {
   return (
-    <Card>
+    <Card className="transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
       <CardHeader className="flex flex-row items-start justify-between gap-2 space-y-0">
         <div>
           <CardTitle className="text-base">Mesa {table.number}</CardTitle>

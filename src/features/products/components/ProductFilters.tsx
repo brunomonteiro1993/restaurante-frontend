@@ -1,3 +1,4 @@
+import { FiltersPanel } from '@/components/shared/filters-panel'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type {
@@ -33,7 +34,7 @@ export function ProductFilters({
   onCategoryIdChange,
 }: ProductFiltersProps) {
   return (
-    <div className="flex flex-col gap-4">
+    <FiltersPanel>
       <div className="flex flex-wrap gap-2">
         {availabilityOptions.map((opt) => (
           <Button
@@ -47,8 +48,8 @@ export function ProductFilters({
         ))}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <div className="space-y-1">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-1.5">
           <p className="text-xs font-medium text-muted-foreground">Busca por nome</p>
           <Input
             placeholder="Ex.: Pizza"
@@ -56,10 +57,10 @@ export function ProductFilters({
             onChange={(e) => onSearchChange(e.target.value)}
           />
         </div>
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           <p className="text-xs font-medium text-muted-foreground">Categoria</p>
           <select
-            className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50"
+            className="flex h-9 w-full rounded-lg border border-input bg-transparent px-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50"
             value={categoryId}
             onChange={(e) => onCategoryIdChange(e.target.value)}
             disabled={categoriesLoading}
@@ -73,6 +74,6 @@ export function ProductFilters({
           </select>
         </div>
       </div>
-    </div>
+    </FiltersPanel>
   )
 }

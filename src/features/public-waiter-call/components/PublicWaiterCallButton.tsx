@@ -18,7 +18,7 @@ export function PublicWaiterCallButton({ restaurantSlug, tableCode }: PublicWait
   const hasOpenCall = statusQuery.data?.hasOpenCall ?? false
 
   return (
-    <Card>
+    <Card className="rounded-2xl border shadow-sm transition-all duration-200 hover:shadow-md">
       <CardContent className="flex items-center justify-between gap-3 p-3">
         <div className="space-y-1">
           <p className="text-sm font-medium">Precisa de ajuda?</p>
@@ -27,6 +27,7 @@ export function PublicWaiterCallButton({ restaurantSlug, tableCode }: PublicWait
         <Button
           type="button"
           size="sm"
+          className="transition-all duration-200"
           disabled={statusQuery.isLoading || hasOpenCall || createMutation.isPending}
           onClick={() =>
             createMutation.mutate({
