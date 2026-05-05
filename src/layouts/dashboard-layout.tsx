@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { useAuth } from '@/features/auth/hooks/use-auth'
 import { usePermission } from '@/features/auth/permissions/usePermission'
 import type { Permission } from '@/features/auth/permissions/permissions'
+import { useRealtimeEvents } from '@/hooks/useRealtimeEvents'
 
 const links = [
   { to: '/dashboard', label: 'Dashboard', permission: 'dashboard.read' },
@@ -21,6 +22,7 @@ const links = [
 export function DashboardLayout() {
   const { user, logout } = useAuth()
   const { can } = usePermission()
+  useRealtimeEvents()
   const visibleLinks = user ? links.filter((link) => can(link.permission)) : []
 
   return (

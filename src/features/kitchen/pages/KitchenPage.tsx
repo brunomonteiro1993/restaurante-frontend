@@ -2,12 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { KitchenOrderList } from '@/features/kitchen/components/KitchenOrderList'
 import { useKitchenOrders } from '@/features/kitchen/hooks/useKitchenOrders'
-import { useKitchenRealtime } from '@/features/kitchen/hooks/useKitchenRealtime'
 import { useReadyOrder } from '@/features/kitchen/hooks/useReadyOrder'
 import { useStartOrder } from '@/features/kitchen/hooks/useStartOrder'
 
 export function KitchenPage() {
-  useKitchenRealtime()
   const { data, isLoading, isError } = useKitchenOrders()
   const startOrderMutation = useStartOrder()
   const readyOrderMutation = useReadyOrder()
