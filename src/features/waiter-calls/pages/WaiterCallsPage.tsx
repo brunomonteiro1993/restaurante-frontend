@@ -6,13 +6,11 @@ import { WaiterCallFilters } from '@/features/waiter-calls/components/WaiterCall
 import { WaiterCallList } from '@/features/waiter-calls/components/WaiterCallList'
 import { useUpdateWaiterCallStatus } from '@/features/waiter-calls/hooks/useUpdateWaiterCallStatus'
 import { useWaiterCalls } from '@/features/waiter-calls/hooks/useWaiterCalls'
-import { useWaiterCallsRealtime } from '@/features/waiter-calls/hooks/useWaiterCallsRealtime'
 import type { WaiterCallStatus } from '@/features/waiter-calls/types/waiter-calls.types'
 
 type FilterOption = 'ALL' | WaiterCallStatus
 
 export function WaiterCallsPage() {
-  useWaiterCallsRealtime()
   const [filter, setFilter] = useState<FilterOption>('ALL')
   const filters = useMemo(() => (filter === 'ALL' ? {} : { status: filter }), [filter])
 
