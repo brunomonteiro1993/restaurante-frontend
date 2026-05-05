@@ -10,9 +10,9 @@ import type { Permission } from '@/features/auth/permissions/permissions'
 import { useDashboard } from '@/features/dashboard/hooks/useDashboard'
 
 const shortcuts = [
-  { to: '/kitchen', label: 'Kitchen', permission: 'kitchen.read' },
+  { to: '/kitchen', label: 'Cozinha', permission: 'kitchen.read' },
   { to: '/orders', label: 'Pedidos', permission: 'orders.read' },
-  { to: '/waiter-calls', label: 'Waiter Calls', permission: 'waiterCalls.read' },
+  { to: '/waiter-calls', label: 'Chamados', permission: 'waiterCalls.read' },
   { to: '/bills', label: 'Fechamento', permission: 'bills.read' },
   { to: '/tables', label: 'Mesas', permission: 'tables.manage' },
   { to: '/products', label: 'Produtos', permission: 'products.manage' },

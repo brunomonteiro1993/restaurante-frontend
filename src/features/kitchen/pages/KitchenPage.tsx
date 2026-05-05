@@ -18,7 +18,7 @@ export function KitchenPage() {
 
   return (
     <div className="space-y-4">
-      <PageHeader title="Kitchen" subtitle="Fila operacional da cozinha com pedidos pendentes e em preparo." />
+      <PageHeader title="Cozinha" subtitle="Fila operacional da cozinha com pedidos pendentes e em preparo." />
 
       {isLoading && (
         <div className="grid gap-4 lg:grid-cols-2">

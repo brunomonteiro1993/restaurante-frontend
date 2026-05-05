@@ -22,7 +22,7 @@ export function WaiterCallsPage() {
 
   return (
     <div className="space-y-4">
-      <PageHeader title="Waiter Calls" subtitle="Controle operacional dos chamados de atendimento por mesa." />
+      <PageHeader title="Chamados" subtitle="Controle operacional dos chamados de atendimento por mesa." />
       {data?.meta && (
         <p className="text-xs text-muted-foreground">
           {data.meta.total} chamado(s) - pagina {data.meta.page} de {Math.max(data.meta.totalPages, 1)}
