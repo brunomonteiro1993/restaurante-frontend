@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
+import { Printer } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -13,8 +14,10 @@ import { TableList } from '@/features/tables/components/TableList'
 import { TableQRCodeDialog } from '@/features/tables/components/TableQRCodeDialog'
 import { useDeleteTable } from '@/features/tables/hooks/useDeleteTable'
 import { useTables } from '@/features/tables/hooks/useTables'
+import { tablesService } from '@/features/tables/services/tables.service'
 import { useRestaurantMe } from '@/features/restaurant/hooks/useRestaurantMe'
 import type { Table, TableListFilters, TableStatusFilter } from '@/features/tables/types/tables.types'
+import { printTableQRCodesBatch } from '@/features/tables/utils/qr-batch-print.utils'
 
 export function TablesPage() {
   const { can } = usePermission()
@@ -31,6 +34,7 @@ export function TablesPage() {
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [qrTarget, setQrTarget] = useState<Table | null>(null)
   const [qrOpen, setQrOpen] = useState(false)
+  const [batchPrintBusy, setBatchPrintBusy] = useState(false)
 
   const listFilters: TableListFilters = useMemo(
     () => ({
@@ -55,6 +59,53 @@ export function TablesPage() {
 
   const listBusy = deleteMutation.isPending
 
+  const handleBatchPrint = async () => {
+    if (!restaurant?.slug) {
+      toast.error('Nao foi possivel carregar o slug do restaurante.')
+      return
+    }
+
+    setBatchPrintBusy(true)
+    try {
+      const allTables = await tablesService.fetchAllWithSearch()
+
+      const printableTables = allTables.filter((table) => table.status !== 'DISABLED' && Boolean(table.publicCode))
+      const skippedCount = allTables.length - printableTables.length
+
+      if (printableTables.length === 0) {
+        toast.error('Nao ha mesas elegiveis para impressao em lote.')
+        return
+      }
+
+      const ok = printTableQRCodesBatch({
+        restaurantName: restaurant.name,
+        restaurantLogoUrl: restaurant.logoUrl,
+        restaurantSlug: restaurant.slug,
+        tables: printableTables.map((table) => ({
+          id: table.id,
+          number: table.number,
+          publicCode: table.publicCode,
+          status: table.status,
+        })),
+      })
+
+      if (!ok) {
+        toast.error('Nao foi possivel abrir janela de impressao.')
+        return
+      }
+
+      if (skippedCount > 0) {
+        toast.success(`${printableTables.length} mesa(s) pronta(s) para imprimir. ${skippedCount} ignorada(s).`)
+      } else {
+        toast.success(`${printableTables.length} mesa(s) pronta(s) para imprimir.`)
+      }
+    } catch {
+      toast.error('Falha ao preparar impressao em lote.')
+    } finally {
+      setBatchPrintBusy(false)
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -69,11 +120,17 @@ export function TablesPage() {
             </p>
           )}
         </div>
-        {canManageTables && (
-          <Button type="button" onClick={() => setCreateOpen(true)}>
-            Nova mesa
+        <div className="flex flex-wrap gap-2">
+          <Button type="button" variant="outline" onClick={handleBatchPrint} disabled={batchPrintBusy || !restaurant?.slug}>
+            <Printer className="mr-2 size-4" />
+            {batchPrintBusy ? 'Gerando folha...' : 'Imprimir QRs das mesas'}
           </Button>
-        )}
+          {canManageTables && (
+            <Button type="button" onClick={() => setCreateOpen(true)}>
+              Nova mesa
+            </Button>
+          )}
+        </div>
       </div>
 
       <TableFilters status={statusFilter} search={search} onStatusChange={setStatusFilter} onSearchChange={setSearch} />
