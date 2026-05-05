@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -27,7 +26,7 @@ export function OrderDetailsDialog({ orderId, open, onOpenChange }: OrderDetails
       <DialogContent className="max-h-[min(90vh,720px)] overflow-y-auto sm:max-w-lg md:max-w-xl">
         <DialogHeader>
           <DialogTitle>Detalhes do pedido</DialogTitle>
-          <DialogDescription>Itens e valores conforme o backend.</DialogDescription>
+          {/* <DialogDescription>Itens e valores conforme o backend.</DialogDescription> */}
         </DialogHeader>
 
         {!orderId && <p className="text-sm text-muted-foreground">Nenhum pedido selecionado.</p>}
@@ -51,8 +50,8 @@ export function OrderDetailsDialog({ orderId, open, onOpenChange }: OrderDetails
 
         {orderId && data && (
           <div className="space-y-4 text-sm">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-mono text-xs text-muted-foreground">{data.id}</span>
+            <div className="flex flex-wrap items-center justify-end gap-2">
+              {/* <span className="font-mono text-xs text-muted-foreground">{data.id}</span> */}
               <OrderStatusBadge status={data.status} />
             </div>
 

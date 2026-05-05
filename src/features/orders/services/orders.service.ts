@@ -13,14 +13,16 @@ const DEFAULT_LIMIT = 20
 
 export const ordersService = {
   async list(filters: OrderFilters): Promise<OrdersListResult> {
-    const { page = 1, limit = DEFAULT_LIMIT, status, tableId, search, dateFrom, dateTo } = filters
+    const { page = 1, limit = DEFAULT_LIMIT, status, tableId, tableNumber, search, dateFrom, dateTo } =
+      filters
 
     const { data } = await api.get<ApiPaginatedResponse<OrderListItem>>('/orders', {
       params: {
         page,
         limit,
         ...(status ? { status } : {}),
-        ...(tableId ? { tableId } : {}),
+        ...(tableNumber?.trim() ? { tableNumber: tableNumber.trim() } : {}),
+        ...(tableId && !tableNumber?.trim() ? { tableId } : {}),
         ...(search?.trim() ? { search: search.trim() } : {}),
         ...(dateFrom ? { dateFrom } : {}),
         ...(dateTo ? { dateTo } : {}),

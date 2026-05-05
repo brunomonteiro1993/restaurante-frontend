@@ -21,7 +21,7 @@ export function OrderCard({ order, onDetails }: OrderCardProps) {
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="grid gap-1 text-xs text-muted-foreground">
-          <span className="font-mono text-[11px]">#{order.id.slice(0, 8)}</span>
+          {/* <span className="font-mono text-[11px]">#{order.id.slice(0, 8)}</span> */}
           <span>{order.customerName ?? 'Cliente nao informado'}</span>
           <span>Criado em {formatDateTime(order.createdAt)}</span>
           <span className="font-medium text-foreground">Total {formatCurrency(order.total)}</span>
