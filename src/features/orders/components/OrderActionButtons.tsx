@@ -55,9 +55,6 @@ export function OrderActionButtons({ orderId, status, compact }: OrderActionButt
 
       {canUpdateStatus && status === 'PREPARING' && (
         <>
-          <Button size={size} disabled={busy} onClick={() => updateMutation.mutate({ id: orderId, status: 'READY' })}>
-            {isUpdating ? '...' : 'Marcar pronto'}
-          </Button>
           <Button
             size={size}
             variant="outline"
