@@ -13,7 +13,7 @@ type StatusFilter = 'ALL' | OrderStatus
 
 export function OrdersPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('ALL')
-  const [tableId, setTableId] = useState('')
+  const [tableNumber, setTableNumber] = useState('')
   const [search, setSearch] = useState('')
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
@@ -27,17 +27,17 @@ export function OrdersPage() {
       page,
       limit: 20,
       ...(statusFilter !== 'ALL' ? { status: statusFilter } : {}),
-      ...(tableId.trim() ? { tableId: tableId.trim() } : {}),
+      ...(tableNumber.trim() ? { tableNumber: tableNumber.trim() } : {}),
       ...(search.trim() ? { search: search.trim() } : {}),
       ...(dateFrom ? { dateFrom } : {}),
       ...(dateTo ? { dateTo } : {}),
     }),
-    [page, statusFilter, tableId, search, dateFrom, dateTo],
+    [page, statusFilter, tableNumber, search, dateFrom, dateTo],
   )
 
   useEffect(() => {
     setPage(1)
-  }, [statusFilter, tableId, search, dateFrom, dateTo])
+  }, [statusFilter, tableNumber, search, dateFrom, dateTo])
 
   const { data, isLoading, isError } = useOrders(apiFilters)
   const orders = data?.items ?? []
@@ -62,12 +62,12 @@ export function OrdersPage() {
 
       <OrderFilters
         status={statusFilter}
-        tableId={tableId}
+        tableNumber={tableNumber}
         search={search}
         dateFrom={dateFrom}
         dateTo={dateTo}
         onStatusChange={setStatusFilter}
-        onTableIdChange={setTableId}
+        onTableNumberChange={setTableNumber}
         onSearchChange={setSearch}
         onDateFromChange={setDateFrom}
         onDateToChange={setDateTo}

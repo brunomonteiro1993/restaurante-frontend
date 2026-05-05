@@ -54,6 +54,9 @@ export interface OrderFilters {
   page?: number
   limit?: number
   status?: OrderStatus
+  /** Preferir filtro por numero exibido da mesa; o backend aceita `tableNumber`. */
+  tableNumber?: string
+  /** UUID da mesa; alternativa a `tableNumber` (uso programatico). */
   tableId?: string
   search?: string
   dateFrom?: string

@@ -7,12 +7,12 @@ type StatusFilter = 'ALL' | OrderStatus
 
 interface OrderFiltersProps {
   status: StatusFilter
-  tableId: string
+  tableNumber: string
   search: string
   dateFrom: string
   dateTo: string
   onStatusChange: (v: StatusFilter) => void
-  onTableIdChange: (v: string) => void
+  onTableNumberChange: (v: string) => void
   onSearchChange: (v: string) => void
   onDateFromChange: (v: string) => void
   onDateToChange: (v: string) => void
@@ -29,12 +29,12 @@ const statusOptions: Array<{ label: string; value: StatusFilter }> = [
 
 export function OrderFilters({
   status,
-  tableId,
+  tableNumber,
   search,
   dateFrom,
   dateTo,
   onStatusChange,
-  onTableIdChange,
+  onTableNumberChange,
   onSearchChange,
   onDateFromChange,
   onDateToChange,
@@ -56,20 +56,20 @@ export function OrderFilters({
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-1.5 sm:col-span-2">
-          <p className="text-xs font-medium text-muted-foreground">Busca (nome do cliente ou UUID do pedido)</p>
+          <p className="text-xs font-medium text-muted-foreground">Busca (nome do cliente)</p>
           <Input
-            placeholder="Ex.: Joao ou UUID completo"
+            placeholder="Ex.: Joao"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
           />
         </div>
         <div className="space-y-1.5">
-          <p className="text-xs font-medium text-muted-foreground">Mesa (UUID)</p>
+          <p className="text-xs font-medium text-muted-foreground">Numero da mesa</p>
           <Input
-            placeholder="Opcional"
-            value={tableId}
-            onChange={(e) => onTableIdChange(e.target.value)}
-            className="font-mono text-xs"
+            placeholder="Ex.: 1 ou 12"
+            autoComplete="off"
+            value={tableNumber}
+            onChange={(e) => onTableNumberChange(e.target.value)}
           />
         </div>
         <div className="space-y-1.5">
