@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { PageHeader } from '@/components/shared/PageHeader'
+import { EmptyState, ErrorState } from '@/components/shared/states'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -55,24 +57,22 @@ export function CategoriesPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Categorias</h1>
-          <p className="text-sm text-muted-foreground">
-            Gestao de categorias do cardapio conforme endpoints internos.
-          </p>
-          {meta && (
-            <p className="mt-1 text-xs text-muted-foreground">
-              {meta.total} categoria(s) - pagina {meta.page} de {Math.max(meta.totalPages, 1)}
-            </p>
-          )}
-        </div>
-        {canManageCategories && (
+      <PageHeader
+        title="Categorias"
+        subtitle="Gestao de categorias do cardapio conforme endpoints internos."
+        rightSlot={
+          canManageCategories ? (
           <Button type="button" onClick={() => setCreateOpen(true)}>
             Nova categoria
           </Button>
-        )}
-      </div>
+          ) : null
+        }
+      />
+      {meta && (
+        <p className="text-xs text-muted-foreground">
+          {meta.total} categoria(s) - pagina {meta.page} de {Math.max(meta.totalPages, 1)}
+        </p>
+      )}
 
       <CategoryFilters
         activeFilter={activeFilter}
@@ -98,22 +98,14 @@ export function CategoriesPage() {
       )}
 
       {isError && (
-        <Card className="border-destructive/40">
-          <CardContent className="py-4 text-sm text-destructive">
-            Nao foi possivel carregar as categorias.
-          </CardContent>
-        </Card>
+        <ErrorState message="Nao foi possivel carregar as categorias." />
       )}
 
       {!isLoading && data && categories.length === 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Nenhuma categoria encontrada</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            Ajuste a busca/filtro ou crie uma nova categoria.
-          </CardContent>
-        </Card>
+        <EmptyState
+          title="Nenhuma categoria encontrada"
+          description="Ajuste a busca/filtro ou crie uma nova categoria."
+        />
       )}
 
       {!isLoading && data && categories.length > 0 && (

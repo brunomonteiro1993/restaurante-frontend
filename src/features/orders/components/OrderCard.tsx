@@ -12,7 +12,7 @@ interface OrderCardProps {
 
 export function OrderCard({ order, onDetails }: OrderCardProps) {
   return (
-    <Card>
+    <Card className="transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
       <CardHeader className="space-y-2">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <CardTitle className="text-base">Mesa {order.table.number}</CardTitle>

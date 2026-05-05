@@ -1,15 +1,16 @@
 import { Badge } from '@/components/ui/badge'
 import type { TableStatus } from '@/features/tables/types/tables.types'
+import { statusBadgeClass } from '@/lib/status-badge'
 
 interface TableStatusBadgeProps {
   status: TableStatus
 }
 
 const config: Record<TableStatus, { label: string; className: string }> = {
-  AVAILABLE: { label: 'Disponivel', className: 'bg-emerald-100 text-emerald-900 hover:bg-emerald-100' },
-  OCCUPIED: { label: 'Ocupada', className: 'bg-amber-100 text-amber-900 hover:bg-amber-100' },
-  RESERVED: { label: 'Reservada', className: 'bg-blue-100 text-blue-900 hover:bg-blue-100' },
-  DISABLED: { label: 'Indisponivel', className: 'bg-zinc-200 text-zinc-800 hover:bg-zinc-200' },
+  AVAILABLE: { label: 'Disponivel', className: statusBadgeClass.available },
+  OCCUPIED: { label: 'Ocupada', className: statusBadgeClass.occupied },
+  RESERVED: { label: 'Reservada', className: statusBadgeClass.reserved },
+  DISABLED: { label: 'Indisponivel', className: statusBadgeClass.disabled },
 }
 
 export function TableStatusBadge({ status }: TableStatusBadgeProps) {

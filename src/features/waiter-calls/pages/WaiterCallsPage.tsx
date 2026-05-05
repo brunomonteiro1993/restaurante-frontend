@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
+import { PageHeader } from '@/components/shared/PageHeader'
+import { EmptyState, ErrorState, LoadingCards } from '@/components/shared/states'
 import { WaiterCallFilters } from '@/features/waiter-calls/components/WaiterCallFilters'
 import { WaiterCallList } from '@/features/waiter-calls/components/WaiterCallList'
 import { useUpdateWaiterCallStatus } from '@/features/waiter-calls/hooks/useUpdateWaiterCallStatus'
@@ -22,54 +22,21 @@ export function WaiterCallsPage() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Waiter Calls</h1>
-        <p className="text-sm text-muted-foreground">
-          Controle operacional dos chamados de atendimento por mesa.
+      <PageHeader title="Waiter Calls" subtitle="Controle operacional dos chamados de atendimento por mesa." />
+      {data?.meta && (
+        <p className="text-xs text-muted-foreground">
+          {data.meta.total} chamado(s) - pagina {data.meta.page} de {Math.max(data.meta.totalPages, 1)}
         </p>
-        {data?.meta && (
-          <p className="mt-1 text-xs text-muted-foreground">
-            {data.meta.total} chamado(s) - pagina {data.meta.page} de {Math.max(data.meta.totalPages, 1)}
-          </p>
-        )}
-      </div>
+      )}
 
       <WaiterCallFilters value={filter} onChange={setFilter} />
 
-      {isLoading && (
-        <div className="grid gap-4 lg:grid-cols-2">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <Card key={index}>
-              <CardHeader>
-                <Skeleton className="h-6 w-40" />
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-10 w-full" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+      {isLoading && <LoadingCards />}
 
-      {isError && (
-        <Card className="border-destructive/40">
-          <CardContent className="py-4 text-sm text-destructive">
-            Nao foi possivel carregar os chamados.
-          </CardContent>
-        </Card>
-      )}
+      {isError && <ErrorState message="Nao foi possivel carregar os chamados." />}
 
       {!isLoading && data && calls.length === 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Nenhum chamado encontrado</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            Nao existem chamados para o filtro selecionado.
-          </CardContent>
-        </Card>
+        <EmptyState title="Nenhum chamado encontrado" description="Nao existem chamados para o filtro selecionado." />
       )}
 
       {!isLoading && data && calls.length > 0 && (

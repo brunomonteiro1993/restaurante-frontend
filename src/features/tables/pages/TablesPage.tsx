@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { Printer } from 'lucide-react'
 
+import { PageHeader } from '@/components/shared/PageHeader'
+import { EmptyState, ErrorState } from '@/components/shared/states'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -108,19 +110,11 @@ export function TablesPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Mesas</h1>
-          <p className="text-sm text-muted-foreground">
-            Gestao de mesas (CRUD) conforme o backend. Requer permissao de gerenciamento.
-          </p>
-          {meta && (
-            <p className="mt-1 text-xs text-muted-foreground">
-              {meta.total} mesa(s) - pagina {meta.page} de {Math.max(meta.totalPages, 1)}
-            </p>
-          )}
-        </div>
-        <div className="flex flex-wrap gap-2">
+      <PageHeader
+        title="Mesas"
+        subtitle="Gestao de mesas (CRUD) conforme o backend. Requer permissao de gerenciamento."
+        rightSlot={
+          <div className="flex flex-wrap gap-2">
           <Button type="button" variant="outline" onClick={handleBatchPrint} disabled={batchPrintBusy || !restaurant?.slug}>
             <Printer className="mr-2 size-4" />
             {batchPrintBusy ? 'Gerando folha...' : 'Imprimir QRs das mesas'}
@@ -130,8 +124,14 @@ export function TablesPage() {
               Nova mesa
             </Button>
           )}
-        </div>
-      </div>
+          </div>
+        }
+      />
+      {meta && (
+        <p className="text-xs text-muted-foreground">
+          {meta.total} mesa(s) - pagina {meta.page} de {Math.max(meta.totalPages, 1)}
+        </p>
+      )}
 
       <TableFilters status={statusFilter} search={search} onStatusChange={setStatusFilter} onSearchChange={setSearch} />
 
@@ -152,22 +152,11 @@ export function TablesPage() {
       )}
 
       {isError && (
-        <Card className="border-destructive/40">
-          <CardContent className="py-4 text-sm text-destructive">
-            Nao foi possivel carregar as mesas.
-          </CardContent>
-        </Card>
+        <ErrorState message="Nao foi possivel carregar as mesas." />
       )}
 
       {!isLoading && data && tables.length === 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Nenhuma mesa encontrada</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            Ajuste a busca ou crie uma nova mesa.
-          </CardContent>
-        </Card>
+        <EmptyState title="Nenhuma mesa encontrada" description="Ajuste a busca ou crie uma nova mesa." />
       )}
 
       {!isLoading && data && tables.length > 0 && (

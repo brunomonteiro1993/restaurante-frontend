@@ -1,4 +1,5 @@
 import { Badge } from '@/components/ui/badge'
+import { statusBadgeClass } from '@/lib/status-badge'
 
 interface ProductStatusBadgeProps {
   isAvailable: boolean
@@ -6,13 +7,7 @@ interface ProductStatusBadgeProps {
 
 export function ProductStatusBadge({ isAvailable }: ProductStatusBadgeProps) {
   return (
-    <Badge
-      className={
-        isAvailable
-          ? 'bg-emerald-100 text-emerald-900 hover:bg-emerald-100'
-          : 'bg-zinc-200 text-zinc-800 hover:bg-zinc-200'
-      }
-    >
+    <Badge className={isAvailable ? statusBadgeClass.available : statusBadgeClass.unavailable}>
       {isAvailable ? 'Disponivel' : 'Indisponivel'}
     </Badge>
   )

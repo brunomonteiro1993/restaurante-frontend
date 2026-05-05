@@ -1,6 +1,8 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
+import { PageHeader } from '@/components/shared/PageHeader'
+import { ErrorState } from '@/components/shared/states'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DashboardStatsCards } from '@/features/dashboard/components/DashboardStats'
 import { usePermission } from '@/features/auth/permissions/usePermission'
@@ -25,17 +27,13 @@ export function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Dashboard operacional</h1>
-        <p className="text-sm text-muted-foreground">Visao rapida da operacao do restaurante em tempo real.</p>
-      </div>
+      <PageHeader
+        title="Dashboard operacional"
+        subtitle="Visao rapida da operacao do restaurante em tempo real."
+      />
 
       {isError && (
-        <Card className="border-destructive/40">
-          <CardContent className="py-4 text-sm text-destructive">
-            Nao foi possivel carregar os indicadores da dashboard.
-          </CardContent>
-        </Card>
+        <ErrorState message="Nao foi possivel carregar os indicadores da dashboard." />
       )}
 
       <DashboardStatsCards stats={data} isLoading={isLoading} />
@@ -49,7 +47,7 @@ export function DashboardPage() {
             <Link
               key={shortcut.to}
               to={shortcut.to}
-              className="rounded-2xl border bg-background p-4 transition hover:shadow-md"
+              className="rounded-2xl border bg-background p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
             >
               <div className="flex items-center justify-between gap-3">
                 <div>

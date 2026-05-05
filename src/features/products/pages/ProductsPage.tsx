@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useQueries } from '@tanstack/react-query'
 
+import { PageHeader } from '@/components/shared/PageHeader'
+import { EmptyState, ErrorState } from '@/components/shared/states'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -77,24 +79,22 @@ export function ProductsPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Produtos</h1>
-          <p className="text-sm text-muted-foreground">
-            Gestao operacional de produtos do cardapio.
-          </p>
-          {meta && (
-            <p className="mt-1 text-xs text-muted-foreground">
-              {meta.total} produto(s) - pagina {meta.page} de {Math.max(meta.totalPages, 1)}
-            </p>
-          )}
-        </div>
-        {canManageProducts && (
+      <PageHeader
+        title="Produtos"
+        subtitle="Gestao operacional de produtos do cardapio."
+        rightSlot={
+          canManageProducts ? (
           <Button type="button" onClick={() => setCreateOpen(true)}>
             Novo produto
           </Button>
-        )}
-      </div>
+          ) : null
+        }
+      />
+      {meta && (
+        <p className="text-xs text-muted-foreground">
+          {meta.total} produto(s) - pagina {meta.page} de {Math.max(meta.totalPages, 1)}
+        </p>
+      )}
 
       <ProductFilters
         availabilityFilter={availabilityFilter}
@@ -125,22 +125,11 @@ export function ProductsPage() {
       )}
 
       {isError && (
-        <Card className="border-destructive/40">
-          <CardContent className="py-4 text-sm text-destructive">
-            Nao foi possivel carregar os produtos.
-          </CardContent>
-        </Card>
+        <ErrorState message="Nao foi possivel carregar os produtos." />
       )}
 
       {!isLoading && data && products.length === 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Nenhum produto encontrado</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            Ajuste os filtros ou cadastre um novo produto.
-          </CardContent>
-        </Card>
+        <EmptyState title="Nenhum produto encontrado" description="Ajuste os filtros ou cadastre um novo produto." />
       )}
 
       {!isLoading && data && products.length > 0 && (

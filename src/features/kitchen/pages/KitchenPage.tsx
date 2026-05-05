@@ -1,5 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { PageHeader } from '@/components/shared/PageHeader'
+import { EmptyState, ErrorState } from '@/components/shared/states'
 import { KitchenOrderList } from '@/features/kitchen/components/KitchenOrderList'
 import { useKitchenOrders } from '@/features/kitchen/hooks/useKitchenOrders'
 import { useReadyOrder } from '@/features/kitchen/hooks/useReadyOrder'
@@ -16,12 +18,7 @@ export function KitchenPage() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Kitchen</h1>
-        <p className="text-sm text-muted-foreground">
-          Fila operacional da cozinha com pedidos pendentes e em preparo.
-        </p>
-      </div>
+      <PageHeader title="Kitchen" subtitle="Fila operacional da cozinha com pedidos pendentes e em preparo." />
 
       {isLoading && (
         <div className="grid gap-4 lg:grid-cols-2">
@@ -41,22 +38,14 @@ export function KitchenPage() {
       )}
 
       {isError && (
-        <Card className="border-destructive/40">
-          <CardContent className="py-4 text-sm text-destructive">
-            Nao foi possivel carregar os pedidos da cozinha.
-          </CardContent>
-        </Card>
+        <ErrorState message="Nao foi possivel carregar os pedidos da cozinha." />
       )}
 
       {!isLoading && data && data.length === 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Nenhum pedido ativo</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            Nao ha pedidos pendentes ou em preparo no momento.
-          </CardContent>
-        </Card>
+        <EmptyState
+          title="Nenhum pedido ativo"
+          description="Nao ha pedidos pendentes ou em preparo no momento."
+        />
       )}
 
       {!isLoading && data && data.length > 0 && (

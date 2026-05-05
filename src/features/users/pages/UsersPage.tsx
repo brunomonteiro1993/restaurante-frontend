@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { PageHeader } from '@/components/shared/PageHeader'
+import { EmptyState, ErrorState } from '@/components/shared/states'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -53,24 +55,22 @@ export function UsersPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Usuarios</h1>
-          <p className="text-sm text-muted-foreground">
-            Gestao de usuarios internos do restaurante autenticado.
-          </p>
-          {meta && (
-            <p className="mt-1 text-xs text-muted-foreground">
-              {meta.total} usuario(s) - pagina {meta.page} de {Math.max(meta.totalPages, 1)}
-            </p>
-          )}
-        </div>
-        {canManageUsers && (
+      <PageHeader
+        title="Usuarios"
+        subtitle="Gestao de usuarios internos do restaurante autenticado."
+        rightSlot={
+          canManageUsers ? (
           <Button type="button" onClick={() => setCreateOpen(true)}>
             Novo usuario
           </Button>
-        )}
-      </div>
+          ) : null
+        }
+      />
+      {meta && (
+        <p className="text-xs text-muted-foreground">
+          {meta.total} usuario(s) - pagina {meta.page} de {Math.max(meta.totalPages, 1)}
+        </p>
+      )}
 
       <UserFilters
         search={search}
@@ -99,22 +99,11 @@ export function UsersPage() {
       )}
 
       {isError && (
-        <Card className="border-destructive/40">
-          <CardContent className="py-4 text-sm text-destructive">
-            Nao foi possivel carregar os usuarios.
-          </CardContent>
-        </Card>
+        <ErrorState message="Nao foi possivel carregar os usuarios." />
       )}
 
       {!isLoading && data && users.length === 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Nenhum usuario encontrado</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            Ajuste os filtros ou cadastre um novo usuario.
-          </CardContent>
-        </Card>
+        <EmptyState title="Nenhum usuario encontrado" description="Ajuste os filtros ou cadastre um novo usuario." />
       )}
 
       {!isLoading && data && users.length > 0 && (

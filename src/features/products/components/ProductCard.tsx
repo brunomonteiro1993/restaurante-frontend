@@ -15,7 +15,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product, onEdit, onDelete, busy }: ProductCardProps) {
   return (
-    <Card>
+    <Card className="transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
       <CardHeader className="flex flex-row items-start justify-between gap-2 space-y-0">
         <div>
           <CardTitle className="text-base">{product.name}</CardTitle>

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { PageHeader } from '@/components/shared/PageHeader'
+import { EmptyState, ErrorState, LoadingCards } from '@/components/shared/states'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
 import { BillDetailsDialog } from '@/features/bills/components/BillDetailsDialog'
 import { BillFilters } from '@/features/bills/components/BillFilters'
 import { BillList } from '@/features/bills/components/BillList'
@@ -54,17 +54,15 @@ export function BillsPage() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Fechamento de conta</h1>
-        <p className="text-sm text-muted-foreground">
-          Listagem, detalhes e acoes de fechamento e pagamento conforme o backend.
+      <PageHeader
+        title="Fechamento de conta"
+        subtitle="Listagem, detalhes e acoes de fechamento e pagamento conforme o backend."
+      />
+      {meta && (
+        <p className="text-xs text-muted-foreground">
+          {meta.total} conta(s) - pagina {meta.page} de {Math.max(meta.totalPages, 1)}
         </p>
-        {meta && (
-          <p className="mt-1 text-xs text-muted-foreground">
-            {meta.total} conta(s) - pagina {meta.page} de {Math.max(meta.totalPages, 1)}
-          </p>
-        )}
-      </div>
+      )}
 
       <BillFilters
         status={statusFilter}
@@ -77,40 +75,12 @@ export function BillsPage() {
         onDateToChange={setDateTo}
       />
 
-      {isLoading && (
-        <div className="grid gap-4 lg:grid-cols-2">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i}>
-              <CardHeader>
-                <Skeleton className="h-6 w-40" />
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-10 w-32" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+      {isLoading && <LoadingCards />}
 
-      {isError && (
-        <Card className="border-destructive/40">
-          <CardContent className="py-4 text-sm text-destructive">
-            Nao foi possivel carregar as contas.
-          </CardContent>
-        </Card>
-      )}
+      {isError && <ErrorState message="Nao foi possivel carregar as contas." />}
 
       {!isLoading && data && bills.length === 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Nenhuma conta encontrada</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            Nao ha contas para os filtros selecionados.
-          </CardContent>
-        </Card>
+        <EmptyState title="Nenhuma conta encontrada" description="Nao ha contas para os filtros selecionados." />
       )}
 
       {!isLoading && data && bills.length > 0 && (
