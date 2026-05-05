@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from 'lucide-react'
+import { Pencil, QrCode, Trash2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -10,10 +10,11 @@ interface TableCardProps {
   table: Table
   onEdit: () => void
   onDelete: () => void
+  onQrCode: () => void
   busy?: boolean
 }
 
-export function TableCard({ table, onEdit, onDelete, busy }: TableCardProps) {
+export function TableCard({ table, onEdit, onDelete, onQrCode, busy }: TableCardProps) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-start justify-between gap-2 space-y-0">
@@ -27,10 +28,14 @@ export function TableCard({ table, onEdit, onDelete, busy }: TableCardProps) {
       </CardHeader>
       <CardContent className="space-y-3">
         {/* <p className="font-mono text-[11px] text-muted-foreground">ID {table.id}</p> */}
-        <p className="text-xs text-muted-foreground">
-          O codigo publico (QR) e gerado no servidor e nao e retornado nesta listagem.
-        </p>
+        {!table.publicCode && (
+          <p className="text-xs text-muted-foreground">Codigo publico indisponivel para esta mesa.</p>
+        )}
         <div className="flex flex-wrap gap-2">
+          <Button type="button" size="sm" variant="secondary" disabled={busy} onClick={onQrCode}>
+            <QrCode className="mr-1 size-3.5" />
+            QR Code
+          </Button>
           <Button type="button" size="sm" variant="outline" disabled={busy} onClick={onEdit}>
             <Pencil className="mr-1 size-3.5" />
             Editar

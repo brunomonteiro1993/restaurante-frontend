@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,8 +10,10 @@ import { DeleteTableDialog } from '@/features/tables/components/DeleteTableDialo
 import { EditTableDialog } from '@/features/tables/components/EditTableDialog'
 import { TableFilters } from '@/features/tables/components/TableFilters'
 import { TableList } from '@/features/tables/components/TableList'
+import { TableQRCodeDialog } from '@/features/tables/components/TableQRCodeDialog'
 import { useDeleteTable } from '@/features/tables/hooks/useDeleteTable'
 import { useTables } from '@/features/tables/hooks/useTables'
+import { useRestaurantMe } from '@/features/restaurant/hooks/useRestaurantMe'
 import type { Table, TableListFilters, TableStatusFilter } from '@/features/tables/types/tables.types'
 
 export function TablesPage() {
@@ -26,6 +29,8 @@ export function TablesPage() {
   const [editOpen, setEditOpen] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<Table | null>(null)
   const [deleteOpen, setDeleteOpen] = useState(false)
+  const [qrTarget, setQrTarget] = useState<Table | null>(null)
+  const [qrOpen, setQrOpen] = useState(false)
 
   const listFilters: TableListFilters = useMemo(
     () => ({
@@ -42,6 +47,7 @@ export function TablesPage() {
   }, [search, statusFilter])
 
   const { data, isLoading, isError } = useTables(listFilters)
+  const { data: restaurant } = useRestaurantMe()
   const deleteMutation = useDeleteTable()
 
   const tables = data?.items ?? []
@@ -120,6 +126,18 @@ export function TablesPage() {
               setDeleteTarget(t)
               setDeleteOpen(true)
             }}
+            onQrCode={(t) => {
+              if (!t.publicCode) {
+                toast.error('Esta mesa ainda nao possui codigo publico disponivel.')
+                return
+              }
+              if (!restaurant?.slug) {
+                toast.error('Nao foi possivel carregar o slug do restaurante.')
+                return
+              }
+              setQrTarget(t)
+              setQrOpen(true)
+            }}
           />
           {meta && meta.totalPages > 1 && (
             <div className="flex flex-wrap items-center justify-center gap-2">
@@ -164,6 +182,19 @@ export function TablesPage() {
           if (!next) setDeleteTarget(null)
         }}
       />
+      {qrTarget?.publicCode && restaurant?.slug && (
+        <TableQRCodeDialog
+          open={qrOpen}
+          onOpenChange={(next) => {
+            setQrOpen(next)
+            if (!next) setQrTarget(null)
+          }}
+          tableNumber={qrTarget.number}
+          publicCode={qrTarget.publicCode}
+          restaurantSlug={restaurant.slug}
+          restaurantName={restaurant.name}
+        />
+      )}
     </div>
   )
 }

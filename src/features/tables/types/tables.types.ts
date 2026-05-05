@@ -1,9 +1,10 @@
 export type TableStatus = 'AVAILABLE' | 'OCCUPIED' | 'RESERVED' | 'DISABLED'
 
-/** Resposta de GET /tables e GET /tables/:id (backend `TablePublic` — sem publicCode no select). */
+/** Resposta de GET /tables e GET /tables/:id. */
 export interface Table {
   id: string
   number: string
+  publicCode: string
   capacity: number
   status: TableStatus
   createdAt: string
