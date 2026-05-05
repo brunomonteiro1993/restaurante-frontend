@@ -24,7 +24,7 @@ import { useRealtimeEvents } from '@/hooks/useRealtimeEvents'
 
 const links = [
   { to: '/dashboard', label: 'Dashboard', permission: 'dashboard.read', icon: LayoutDashboard },
-  { to: '/kitchen', label: 'Kitchen', permission: 'kitchen.read', icon: UtensilsCrossed },
+  { to: '/kitchen', label: 'Cozinha', permission: 'kitchen.read', icon: UtensilsCrossed },
   { to: '/orders', label: 'Pedidos', permission: 'orders.read', icon: ClipboardList },
   { to: '/waiter-calls', label: 'Chamados', permission: 'waiterCalls.read', icon: PhoneCall },
   { to: '/bills', label: 'Contas', permission: 'bills.read', icon: Receipt },
