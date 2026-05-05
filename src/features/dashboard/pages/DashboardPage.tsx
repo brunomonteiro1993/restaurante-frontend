@@ -1,12 +1,10 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DashboardStatsCards } from '@/features/dashboard/components/DashboardStats'
 import { usePermission } from '@/features/auth/permissions/usePermission'
 import type { Permission } from '@/features/auth/permissions/permissions'
-import { cn } from '@/lib/utils'
 import { useDashboard } from '@/features/dashboard/hooks/useDashboard'
 
 const shortcuts = [
@@ -26,12 +24,10 @@ export function DashboardPage() {
   const visibleShortcuts = shortcuts.filter((s) => can(s.permission))
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Dashboard operacional</h1>
-        <p className="text-sm text-muted-foreground">
-          Visao rapida da operacao do restaurante em tempo real de consulta.
-        </p>
+        <h1 className="text-2xl font-semibold">Dashboard operacional</h1>
+        <p className="text-sm text-muted-foreground">Visao rapida da operacao do restaurante em tempo real.</p>
       </div>
 
       {isError && (
@@ -44,19 +40,24 @@ export function DashboardPage() {
 
       <DashboardStatsCards stats={data} isLoading={isLoading} />
 
-      <Card>
+      <Card className="rounded-2xl border shadow-sm">
         <CardHeader>
           <CardTitle className="text-base">Atalhos rapidos</CardTitle>
         </CardHeader>
-        <CardContent className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+        <CardContent className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {visibleShortcuts.map((shortcut) => (
             <Link
               key={shortcut.to}
               to={shortcut.to}
-              className={cn(buttonVariants({ variant: 'outline' }), 'justify-between')}
+              className="rounded-2xl border bg-background p-4 transition hover:shadow-md"
             >
-              {shortcut.label}
-              <ArrowRight className="size-4" />
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-medium">{shortcut.label}</p>
+                  <p className="text-xs text-muted-foreground">Acessar modulo</p>
+                </div>
+                <ArrowRight className="size-4 text-muted-foreground" />
+              </div>
             </Link>
           ))}
         </CardContent>
