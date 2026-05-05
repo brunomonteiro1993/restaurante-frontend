@@ -193,6 +193,7 @@ export function TablesPage() {
           publicCode={qrTarget.publicCode}
           restaurantSlug={restaurant.slug}
           restaurantName={restaurant.name}
+          restaurantLogoUrl={restaurant.logoUrl}
         />
       )}
     </div>
