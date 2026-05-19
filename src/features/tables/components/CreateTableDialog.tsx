@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { useForm, type Resolver } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -24,7 +24,7 @@ export function CreateTableDialog({ open, onOpenChange }: CreateTableDialogProps
   const createMutation = useCreateTable()
 
   const form = useForm<CreateTableFormValues>({
-    resolver: zodResolver(createTableFormSchema),
+    resolver: zodResolver(createTableFormSchema) as Resolver<CreateTableFormValues>,
     defaultValues: {
       number: '',
       capacity: 4,

@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, type Resolver } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -29,7 +29,7 @@ export function EditTableDialog({ tableId, open, onOpenChange }: EditTableDialog
   const updateMutation = useUpdateTable()
 
   const form = useForm<UpdateTableFormValues>({
-    resolver: zodResolver(updateTableFormSchema),
+    resolver: zodResolver(updateTableFormSchema) as Resolver<UpdateTableFormValues>,
     defaultValues: {
       number: '',
       capacity: 1,
