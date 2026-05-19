@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import { toast } from 'sonner'
 
-import { queryKeys } from '@/lib/query-keys'
 import type { ApiErrorResponse } from '@/features/auth/types/auth.types'
 import { categoriesService } from '@/features/categories/services/categories.service'
 import type { CreateCategoryPayload } from '@/features/categories/types/categories.types'
