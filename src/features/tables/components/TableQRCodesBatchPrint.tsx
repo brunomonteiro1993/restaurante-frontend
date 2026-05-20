@@ -1,4 +1,4 @@
-import { env } from '@/lib/env'
+import { getMenuBaseUrl } from '@/lib/env'
 import { TableQRCodePrintLayout } from '@/features/tables/components/TableQRCodePrintLayout'
 import type { TableStatus } from '@/features/tables/types/tables.types'
 
@@ -26,7 +26,7 @@ export function TableQRCodesBatchPrint({
     <main className="qr-batch-page">
       <section className="qr-batch-grid">
         {tables.map((table) => {
-          const qrUrl = `${env.appUrl}/menu/${restaurantSlug}/table/${table.publicCode}`
+          const qrUrl = `${getMenuBaseUrl()}/menu/${restaurantSlug}/table/${table.publicCode}`
           return (
             <TableQRCodePrintLayout
               key={table.id}

@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { env } from '@/lib/env'
+import { getMenuBaseUrl } from '@/lib/env'
 import {
   TableQRCodePrintLayout,
 } from '@/features/tables/components/TableQRCodePrintLayout'
@@ -40,7 +40,7 @@ export function TableQRCodeDialog({
   const layoutQrRef = useRef<HTMLDivElement | null>(null)
 
   const menuUrl = useMemo(
-    () => `${env.appUrl}/menu/${restaurantSlug}/table/${publicCode}`,
+    () => `${getMenuBaseUrl()}/menu/${restaurantSlug}/table/${publicCode}`,
     [publicCode, restaurantSlug],
   )
 
