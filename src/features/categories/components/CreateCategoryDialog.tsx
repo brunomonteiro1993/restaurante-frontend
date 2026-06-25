@@ -58,9 +58,9 @@ export function CreateCategoryDialog({ open, onOpenChange }: CreateCategoryDialo
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Nova categoria</DialogTitle>
-          <DialogDescription>
+          {/* <DialogDescription>
             Campos alinhados ao POST /categories do backend.
-          </DialogDescription>
+          </DialogDescription> */}
         </DialogHeader>
 
         <Form {...form}>

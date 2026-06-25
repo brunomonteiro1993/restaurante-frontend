@@ -61,7 +61,7 @@ export function CreateTableDialog({ open, onOpenChange }: CreateTableDialogProps
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Nova mesa</DialogTitle>
-          <DialogDescription>Campos alinhados ao POST /tables do backend.</DialogDescription>
+          {/* <DialogDescription>Campos alinhados ao POST /tables do backend.</DialogDescription> */}
         </DialogHeader>
 
         <Form {...form}>

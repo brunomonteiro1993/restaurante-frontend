@@ -28,7 +28,7 @@ export function WaiterCallCard({ call, onUpdateStatus, isUpdating }: WaiterCallC
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="grid gap-1 text-xs text-muted-foreground">
-          <span className="font-mono text-[11px]">ID: {call.id}</span>
+          {/* <span className="font-mono text-[11px]">ID: {call.id}</span> */}
           <span>Criado: {formatDateTime(call.createdAt)}</span>
           <span>Atualizado: {formatDateTime(call.updatedAt)}</span>
         </div>
