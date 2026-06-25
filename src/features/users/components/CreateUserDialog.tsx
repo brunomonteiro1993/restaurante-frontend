@@ -59,7 +59,7 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Novo usuario</DialogTitle>
-          <DialogDescription>Formulario alinhado ao POST /users.</DialogDescription>
+          {/* <DialogDescription>Formulario alinhado ao POST /users.</DialogDescription> */}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
