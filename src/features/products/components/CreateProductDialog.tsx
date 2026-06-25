@@ -102,9 +102,9 @@ export function CreateProductDialog({ open, onOpenChange }: CreateProductDialogP
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Novo produto</DialogTitle>
-          {/* <DialogDescription>
+          <DialogDescription>
             Formulario alinhado ao POST /products.
-          </DialogDescription> */}
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>

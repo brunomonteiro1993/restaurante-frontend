@@ -52,6 +52,7 @@ export function OrdersPage() {
     <div className="space-y-4">
       <PageHeader
         title="Pedidos"
+        subtitle="Lista operacional com filtros do backend. Acoes de cozinha continuam na Cozinha; aqui o foco e acompanhamento e entrega."
       />
       {meta && (
         <p className="text-xs text-muted-foreground">

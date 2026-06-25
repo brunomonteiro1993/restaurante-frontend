@@ -50,7 +50,7 @@ export function BillFilters({
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* <div className="space-y-1.5">
+        <div className="space-y-1.5">
           <p className="text-xs font-medium text-muted-foreground">Mesa (UUID)</p>
           <Input
             placeholder="Filtrar por id da mesa"
@@ -61,7 +61,7 @@ export function BillFilters({
           <p className="text-[11px] text-muted-foreground">
             O backend filtra por <span className="font-mono">tableId</span>. Deixe vazio para todas.
           </p>
-        </div> */}
+        </div>
         <div className="space-y-1.5">
           <p className="text-xs font-medium text-muted-foreground">Abertura de</p>
           <Input type="date" value={dateFrom} onChange={(e) => onDateFromChange(e.target.value)} />
